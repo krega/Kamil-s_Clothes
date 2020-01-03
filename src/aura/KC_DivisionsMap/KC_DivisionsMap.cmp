@@ -1,0 +1,15 @@
+<!--
+ - Created by BRITENET on 03.12.2019.
+ -->
+
+<aura:component description="KC_DivisionsMap">
+    <aura:attribute name="mapPointers" type="List"/>
+    <aura:attribute name="mapMarkers" type="List" access="private"/>
+
+    <aura:handler name="change" value="{!v.mapPointers}" action="{!c.displayPointers}"/>
+
+    <lightning:card title="{!$Label.c.KC_Map}" iconName="action:map">
+        <lightning:map mapMarkers="{!v.mapMarkers}"/>
+    </lightning:card>
+
+</aura:component>

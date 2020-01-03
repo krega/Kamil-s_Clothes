@@ -1,0 +1,61 @@
+<aura:component description="KC_UpsertAccount" controller="KC_DivisionSearchController"
+                implements="flexipage:availableForAllPageTypes">
+    <aura:attribute name="isUpsertDisplay" type="Boolean" access="public"/>
+    <aura:attribute name="account" type="Account"/>
+    <aura:attribute name="showToast" type="Boolean" access="public"/>
+    <aura:attribute name="accountID" type="String"/>
+    <aura:attribute name="accountName" type="String"/>
+    <aura:attribute name="accountStreet" type="String"/>
+    <aura:attribute name="accountCity" type="String"/>
+    <aura:attribute name="accountCountry" type="String"/>
+    <aura:attribute name="accountPostalCode" type="String"/>
+    <aura:attribute name="accountState" type="String"/>
+
+    <aura:registerEvent name="refreshResultList" type="c:KC_RefreshResult"/>
+
+    <aura:if isTrue="{!v.isUpsertDisplay}">
+        <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true"
+                 aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container">
+                <header class="slds-modal__header">
+                    <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse"
+                            title="Close">
+                    </button>
+                    <h2 id="modal-heading-01" class="slds-modal__title slds-hyphenate"></h2>
+                    <aura:if isTrue="{!v.account.Id != null}">
+                    {!$Label.c.KC_UpdateDivision}
+                        <aura:set attribute="else">
+                                {!$Label.c.KC_CreateNewDivision}
+                        </aura:set>
+                    </aura:if>
+                </header>
+                <lightning:recordEditForm recordId="{!v.account.Id}" objectApiName="Account"
+                                          onsuccess="{!c.onSuccess}"
+                                          onerror="{!c.onError}"
+                                          onsubmit="{!c.onSubmit}"
+                >
+                    <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+                        <lightning:messages/>
+                        <div class="slds-box">
+                            <lightning:inputField fieldName="Name"/>
+                            <lightning:inputField fieldName="ShippingStreet"/>
+                            <lightning:inputField fieldName="ShippingCity"/>
+                            <lightning:inputField fieldName="ShippingPostalCode"/>
+                            <lightning:inputField fieldName="ShippingState"/>
+                            <lightning:inputField fieldName="ShippingCountry"/>
+                        </div>
+                    </div>
+                    <footer class="slds-modal__footer">
+                        <aura:if isTrue="{!v.account.Id != null}">
+                            <lightning:button label="{!$Label.c.KC_Update}" type="submit"/>
+                            <aura:set attribute="else">
+                                <lightning:button label="{!$Label.c.KC_Save}" type="submit"/>
+                            </aura:set>
+                        </aura:if>
+                        <lightning:button label="{!$Label.c.KC_Close}" onclick="{!c.closeEditModal}"/>
+                    </footer>
+                </lightning:recordEditForm>
+            </div>
+        </section>
+    </aura:if>
+</aura:component>

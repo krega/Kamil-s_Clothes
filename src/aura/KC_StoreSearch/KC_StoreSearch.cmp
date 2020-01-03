@@ -1,0 +1,17 @@
+<aura:component description="KC_StoreSearch" controller="KC_DivisionSearchController">
+    <aura:attribute name="searchItemName" type="String" access="public"/>
+    <aura:attribute name="searchItemCity" type="String" access="public"/>
+    <aura:attribute name="searchItemCountry" type="String" access="public"/>
+    <aura:attribute name="search" type="Aura.Action" access="public"/>
+    <aura:attribute name="clear" type="Aura.Action" access="public"/>
+
+    <lightning:input value="{!v.searchItemName}" label="{!$Label.c.KC_DivisionName}" required="true"/>
+    <lightning:input value="{!v.searchItemCity}" label="{!$Label.c.KC_DivisionCity}"/>
+    <lightning:input value="{!v.searchItemCountry}" label="{!$Label.c.KC_DivisionCountry}"/>
+    <center>
+        <div class="buttons-div">
+            <lightning:button label="{!$Label.c.KC_SearchDivisionButton}" onclick="{!v.search }"/>
+            <lightning:button label="{!$Label.c.KC_DivisionClearButton}" onclick="{!v.clear }"/>
+        </div>
+    </center>
+</aura:component>

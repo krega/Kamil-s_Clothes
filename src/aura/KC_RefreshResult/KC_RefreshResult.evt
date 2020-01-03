@@ -1,0 +1,11 @@
+
+<aura:event type="COMPONENT" description="KC_RefreshResult">
+    <aura:attribute name="changeFlag" type="Boolean"/>
+    <aura:attribute name="accountID" type="String"/>
+    <aura:attribute name="accountName" type="String"/>
+    <aura:attribute name="accountStreet" type="String"/>
+    <aura:attribute name="accountCity" type="String"/>
+    <aura:attribute name="accountCountry" type="String"/>
+    <aura:attribute name="accountPostalCode" type="String"/>
+    <aura:attribute name="accountState" type="String"/>
+</aura:event>

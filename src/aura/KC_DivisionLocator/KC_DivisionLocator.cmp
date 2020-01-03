@@ -1,0 +1,53 @@
+<aura:component implements="force:appHostable,flexipage:availableForAllPageTypes"
+                controller="KC_DivisionSearchController">
+    <aura:attribute name="searchItemName" type="String" access="public"/>
+    <aura:attribute name="searchItemCity" type="String" access="public"/>
+    <aura:attribute name="searchItemCountry" type="String" access="public"/>
+    <aura:attribute name="resultList" type="List" access="public"/>
+    <aura:attribute name="mapPointers" type="List" access="public"/>
+    <aura:attribute name="divisionId" type="Id" access="public"/>
+    <aura:attribute name="index" type="Integer" access="public"/>
+    <aura:attribute name="selectedRecord" type="Account" access="public"/>
+    <aura:attribute name="isUpsertDisplay" type="Boolean" access="public"/>
+    <aura:attribute name="operationFailed" type="boolean" default="false"/>
+    <aura:attribute name="operationSuccess" type="boolean" default="false"/>
+    <aura:attribute name="deleteIsOpen" type="boolean" default="false"/>
+
+    <aura:handler name="change" value="{!v.index}" action="{!c.setSelectedRecord}"/>
+    <aura:handler name="refreshResultList" event="c:KC_RefreshResult" action="{!c.handleComponentEvent}"/>
+
+    <lightning:layout horizontalAlign="space" multipleRows="true">
+        <lightning:layoutItem size="12"
+                              mediumDeviceSize="6"
+                              padding="around-small">
+            <div class="slds-box slds-theme_default">
+                <c:KC_StoreSearch searchItemName="{!v.searchItemName}" searchItemCity="{!v.searchItemCity}"
+                                  searchItemCountry="{!v.searchItemCountry}" search="{!c.onSearch}" clear="{!c.clear}"/>
+            </div>
+        </lightning:layoutItem>
+
+        <lightning:layoutItem size="12"
+                              mediumDeviceSize="6"
+                              padding="around-small">
+            <div class="slds-box slds-theme_default">
+                <c:KC_DivisionsMap mapPointers="{!v.mapPointers}"/>
+            </div>
+        </lightning:layoutItem>
+
+        <lightning:layoutItem size="12"
+                              mediumDeviceSize="6"
+                              padding="around-small">
+            <div class="slds-box slds-theme_default">
+                <c:KC_DivisionsList resultList="{!v.resultList}" index="{!v.index}" selectedRecord="{!v.selectedRecord}" />
+            </div>
+        </lightning:layoutItem>
+
+        <lightning:layoutItem size="12"
+                              mediumDeviceSize="6"
+                              padding="around-small">
+            <div class="slds-box slds-theme_default">
+                <c:KC_DivisionDetails account="{!v.selectedRecord}" deleteRecord="{!c.deleteRecord}" operationFailed="{!v.operationFailed}" operationSuccess="{!v.operationSuccess}" deleteIsOpen="{!v.deleteIsOpen}"/>
+            </div>
+        </lightning:layoutItem>
+    </lightning:layout>
+</aura:component>

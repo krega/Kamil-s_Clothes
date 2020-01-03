@@ -1,0 +1,41 @@
+
+<aura:component description="KC_Header"   controller="KC_DivisionSearchController" implements="flexipage:availableForAllPageTypes">
+    <aura:attribute name="isUpsertDisplay" type="Boolean" access="public"/>
+
+    <div class="slds-scope">
+        <div class="slds-page-header">
+            <div class="slds-page-header__row">
+                <div class="slds-page-header__col-title">
+                    <div class="slds-media">
+                        <div class="slds-media__figure">
+                        </div>
+                        <div class="slds-media__body">
+                            <div class="slds-page-header__name">
+                                <div class="slds-page-header__name-title">
+                                    <h1>
+                                    <span class="slds-page-header__title slds-truncate"
+                                          title="{!$Label.c.KC_Title}">{!$Label.c.KC_Title}</span>
+                                    </h1>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="slds-page-header__col-actions">
+                    <div class="slds-page-header__controls">
+                        <div class="slds-page-header__control">
+                            <ul class="slds-button-group-list">
+                                <li>
+                                    <lightning:button label="{!$Label.c.KC_New}" onclick="{!c.showUpsertAccount}"/>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <c:KC_UpsertAccount isUpsertDisplay="{!v.isUpsertDisplay}"/>
+
+</aura:component>

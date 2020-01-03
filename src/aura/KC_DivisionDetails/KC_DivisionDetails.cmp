@@ -1,0 +1,53 @@
+<aura:component description="KC_DivisionDetails" implements="flexipage:availableForRecordHome,force:hasRecordId">
+    <aura:attribute name="account" type="Account"/>
+    <aura:attribute name="divisionId" type="Id" access="public"/>
+    <aura:attribute name="isUpsertDisplay" type="Boolean" access="public"/>
+    <aura:attribute name="deleteIsOpen" type="Boolean" access="public"/>
+    <aura:attribute name="deleteRecord" type="Aura.Action" access="public"/>
+    <aura:attribute name="operationFailed" type="boolean" default="false"/>
+    <aura:attribute name="selectedRecord" type="Account" access="private"/>
+    <aura:attribute name="operationSuccess" type="Boolean" access="public"/>
+
+    <aura:registerEvent name="refreshResultList" type="c:KC_RefreshResult"/>
+
+    <h2>{!$Label.c.KC_Details}
+        <div class="buttons-div">
+            <lightning:button label="{!$Label.c.KC_Edit}" onclick="{!c.showUpsertAccount}"/>
+            <lightning:button label="{!$Label.c.KC_Delete}" onclick="{!c.openDeleteModal }"/>
+        </div>
+    </h2>
+    <aura:if isTrue="{!v.account != null}">
+        <lightning:recordViewForm recordId="{!v.account.Id}" objectApiName="Account">
+            <div class="slds-box">
+                <lightning:outputField fieldName="Name"/>
+                <lightning:outputField fieldName="ShippingStreet"/>
+                <lightning:outputField fieldName="ShippingCity"/>
+                <lightning:outputField fieldName="ShippingPostalCode"/>
+            </div>
+        </lightning:recordViewForm>
+    </aura:if>
+    <aura:if isTrue="{!v.deleteIsOpen}">
+        <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true"
+                 aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container">
+                <header class="slds-modal__header">
+                    <lightning:buttonIcon iconName="utility:close"
+                                          onclick="{! c.closeDeleteModal }"
+                                          alternativeText="close"
+                                          variant="bare-inverse"
+                                          class="slds-modal__close"/>
+                    <h2>{!$Label.c.KC_DeleteDivision}</h2>
+                </header>
+                <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+                    <center><p>{!$Label.c.KC_DeleteDiviionConfirm}</p></center>
+                </div>
+                <footer class="slds-modal__footer">
+                    <lightning:button label="{!$Label.c.KC_Yes}" onclick="{!v.deleteRecord}"/>
+                    <lightning:button label="{!$Label.c.KC_No}" onclick="{!c.closeDeleteModal}"/>
+                </footer>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </aura:if>
+    <c:KC_UpsertAccount account="{!v.account}" isUpsertDisplay="{!v.isUpsertDisplay}"/>
+</aura:component>

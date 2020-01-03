@@ -1,0 +1,16 @@
+<aura:component description="KC_DivisionsList">
+    <aura:attribute name="resultList" type="List"/>
+    <aura:attribute name="divisionId" type="Id" access="public"/>
+    <aura:attribute name="index" type="Integer" access="public"/>
+    <aura:attribute name="selectedRecord" type="account" access="public"/>
+
+    <h2>
+            {!$Label.c.KC_Result}
+    </h2>
+    <div aura:id="main">
+        <aura:iteration items="{!v.resultList}" var="result" indexVar="index">
+            <div class="slds-truncate" aura:id="resultItem" data-id="{!index}"
+                 onclick="{!c.setDivisionId}">{!result.Name}</div>
+        </aura:iteration>
+    </div>
+</aura:component>
