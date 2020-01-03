@@ -10,7 +10,7 @@
     <div aura:id="main">
         <aura:iteration items="{!v.resultList}" var="result" indexVar="index">
             <div class="slds-truncate" aura:id="resultItem" data-id="{!index}"
-                 onclick="{!c.setDivisionId}">{!result.Name}</div>
+                 onclick="{!c.setDivisionId}">{!result.Name} </div>
         </aura:iteration>
     </div>
 </aura:component>
