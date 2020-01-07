@@ -1,0 +1,45 @@
+.THIS .logoRegion {
+    background-image: t('url(' + brandLogoImage  + ')');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
+    z-index: 99;
+    cursor: pointer;
+    position: relative;
+    max-width: 100%;
+    max-height: 52px;
+    display: block;
+    outline: 0;
+    height: 50px;
+    margin-top: 10px;
+}
+.THIS.cHeader {
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.07);
+}
+.THIS.cHeader .cHeaderTop {
+    background-color: #ffffff;
+    color: rgba(34,34,34,.8);
+    padding: .25rem;
+}
+.THIS.cHeader .selfServiceProfileMenuTrigger .trigger-link {
+    color: rgba(34,34,34,.8);
+}
+.THIS.cHeader .selfServiceProfileMenuTrigger .profileName {
+    font-family: Ek Mukta;
+    font-size: .8125rem;
+    font-weight: 400;
+}
+.THIS.cHeader .selfServiceProfileMenuTrigger .trigger-link {
+    display: inline-flex;
+    vertical-align: middle;
+    width: 15rem;
+}
+.THIS.cHeader .selfServiceUserProfileMenu .profileName, .THIS.cHeader .selfServiceUserProfileMenu .down-arrow {
+    display: block;
+    margin-top: auto;
+    margin-bottom: auto;
+    height: 100%;
+}
+.THIS .slds-button_brand{
+    color: white;
+}
