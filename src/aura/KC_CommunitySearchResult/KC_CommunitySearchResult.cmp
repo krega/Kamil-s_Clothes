@@ -1,0 +1,30 @@
+<aura:component description="KC_CommunitySearchResult">
+
+    <aura:attribute name="item" type="Object[]"/>
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <div class="slds-grid slds-grid_align-center">
+        <div class="slds-col">
+            <h3 class="slds-text-heading_medium "></h3>
+         <div onclick="{!c.redirectToDetailPage}" data-index="{!v.item.Product2.Id}" class="product">
+                    <div class="productName">
+                            {!v.item.Product2.Family}
+                    </div>
+                    <lightning:card class="slds-size--1-of-5 slds-p-horizontal_small removeHeader">
+                        <img src="{!v.item.Product2.PhotoId__c}" alt="productphoto"/>
+                        <p class="slds-text-heading_medium ">
+                            <lightning:formattedNumber value="{!v.item.UnitPrice}" style="currency"/>
+                        </p>
+                        <p class="slds-text-title">
+                                {!v.item.Name}
+                        </p>
+                    </lightning:card>
+             </div>
+        </div>
+    </div>
+</aura:component>
+
+
+
+
+
+

@@ -1,0 +1,52 @@
+<aura:component description="KC_RecordDetail" implements="forceCommunity:availableForAllPageTypes,force:hasRecordId"
+                access="global" controller="KC_ProductController">
+    <aura:attribute type="String" name="recordId"/>
+    <aura:attribute name="product" type="PricebookEntry"/>
+    <aura:attribute name="fields" type="String[]"
+                    default="['Name','Description','Family','ProductCode','Size__c','Producent__c']"/>
+    <aura:attribute type="String" name="featurePhoto"/>
+    <aura:attribute type="String" name="price"/>
+    <aura:attribute type="String" name="toasterMessage"/>
+    <aura:attribute type="String" name="toasterType"/>
+    <aura:attribute type="String" name="toasterTitle"/>
+    <aura:attribute name="photos" type="List"/>
+    <aura:attribute name="photoPath" type="String"/>
+
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+
+    <aura:registerEvent name="sendAddToCart" type="c:KC_AddItemToCart"/>
+    <div class="slds-grid slds-gutters">
+    </div>
+    <div class="slds-grid slds-container--center slds-m-top--medium">
+        <lightning:card class="slds-col slds-size_1-of-1">
+            <div class="slds-grid slds-gutters">
+                <div class="slds-col">
+
+                    <img src="{!v.photoPath}" width="400" height="800" class="productimg"/>
+                    <div class="photoGallery">
+                        <aura:iteration var="photo" items="{!v.photos}" indexVar="index">
+                            <img src="{!photo.ImgUrl__c}" width="50" height="100" class="galleryicon" aura:id="resultItem"
+                                 data-id="{!index}" onclick="{!c.selectPhoto}"/>
+                        </aura:iteration>
+                    </div>
+                </div>
+                <div class="slds-col slds-size_2-of-3">
+                    <lightning:recordForm
+                            recordId="{!v.recordId}"
+                            objectApiName="Product2"
+                            fields="{!v.fields}"
+                            mode="readonly" class=""/>
+                    <h1 class="slds-text-heading_medium slds-m-vertical--medium">
+                        <lightning:formattedNumber value="{!v.price}" style="currency"/>
+                    </h1>
+                    <lightning:button variant="brand" label="Add to card" title="Add to card" onclick="{!c.addToCart}"/>
+                </div>
+            </div>
+        </lightning:card>
+    </div>
+
+    <aura:if isTrue="{!not(empty(v.toasterMessage))}">
+        <c:KC_Toaster toasterType="{!v.toasterType}" toasterMessage="{!v.toasterMessage}"
+                      toasterTitle="{!v.toasterTitle}"/>
+    </aura:if>
+</aura:component>

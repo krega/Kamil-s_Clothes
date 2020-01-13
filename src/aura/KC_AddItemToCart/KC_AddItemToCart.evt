@@ -1,0 +1,7 @@
+<!--
+ - Created by BRITENET on 09.01.2020.
+ -->
+
+<aura:event type="APPLICATION" description="KC_AddItemToCart">
+    <aura:attribute type="String" name="recordId"/>
+</aura:event>

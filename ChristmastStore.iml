@@ -301,6 +301,30 @@
                           <MetadataEntry>
                             <option name="name" value="WarehouseSyncTest" />
                           </MetadataEntry>
+                          <MetadataEntry>
+                            <option name="name" value="KC_CommunitySearchController" />
+                            <option name="selected" value="true" />
+                          </MetadataEntry>
+                          <MetadataEntry>
+                            <option name="name" value="KC_GetRelatedThings" />
+                            <option name="selected" value="true" />
+                          </MetadataEntry>
+                          <MetadataEntry>
+                            <option name="name" value="KC_Utils" />
+                            <option name="selected" value="true" />
+                          </MetadataEntry>
+                          <MetadataEntry>
+                            <option name="name" value="KC_Cart" />
+                            <option name="selected" value="true" />
+                          </MetadataEntry>
+                          <MetadataEntry>
+                            <option name="name" value="KC_ProductController" />
+                            <option name="selected" value="true" />
+                          </MetadataEntry>
+                          <MetadataEntry>
+                            <option name="name" value="KC_CartController" />
+                            <option name="selected" value="true" />
+                          </MetadataEntry>
                         </list>
                       </option>
                       <option name="name" value="ApexClass" />
@@ -503,6 +527,14 @@
                           <MetadataEntry>
                             <option name="name" value="HMS_DoctorIntegrationTrigger" />
                           </MetadataEntry>
+                          <MetadataEntry>
+                            <option name="name" value="KC_CreateGlobalLink" />
+                            <option name="selected" value="true" />
+                          </MetadataEntry>
+                          <MetadataEntry>
+                            <option name="name" value="KC_SetImage" />
+                            <option name="selected" value="true" />
+                          </MetadataEntry>
                         </list>
                       </option>
                       <option name="name" value="ApexTrigger" />
@@ -602,6 +634,42 @@
                           </MetadataEntry>
                           <MetadataEntry>
                             <option name="name" value="defaultTokens" />
+                            <option name="selected" value="true" />
+                          </MetadataEntry>
+                          <MetadataEntry>
+                            <option name="name" value="KC_CommunitySearchResultList" />
+                            <option name="selected" value="true" />
+                          </MetadataEntry>
+                          <MetadataEntry>
+                            <option name="name" value="KC_CommunitySearchResult" />
+                            <option name="selected" value="true" />
+                          </MetadataEntry>
+                          <MetadataEntry>
+                            <option name="name" value="KC_RecordDetail" />
+                            <option name="selected" value="true" />
+                          </MetadataEntry>
+                          <MetadataEntry>
+                            <option name="name" value="KC_Gallery" />
+                            <option name="selected" value="true" />
+                          </MetadataEntry>
+                          <MetadataEntry>
+                            <option name="name" value="KC_Cart" />
+                            <option name="selected" value="true" />
+                          </MetadataEntry>
+                          <MetadataEntry>
+                            <option name="name" value="KC_Toaster" />
+                            <option name="selected" value="true" />
+                          </MetadataEntry>
+                          <MetadataEntry>
+                            <option name="name" value="KC_AddItemToCart" />
+                            <option name="selected" value="true" />
+                          </MetadataEntry>
+                          <MetadataEntry>
+                            <option name="name" value="KC_CartPage" />
+                            <option name="selected" value="true" />
+                          </MetadataEntry>
+                          <MetadataEntry>
+                            <option name="name" value="KC_CartItem" />
                             <option name="selected" value="true" />
                           </MetadataEntry>
                         </list>

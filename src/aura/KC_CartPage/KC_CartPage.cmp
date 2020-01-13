@@ -1,0 +1,40 @@
+<aura:component description="KC_CartControllerPage" implements="forceCommunity:availableForAllPageTypes" access="global"
+                controller="KC_CartController">
+    <aura:attribute type="Object[]" name="records"/>
+    <aura:attribute type="String" name="totalPrice"/>
+    <aura:attribute type="String" name="toasterMessage"/>
+    <aura:attribute type="String" name="toasterType"/>
+    <aura:attribute type="String" name="toasterTitle"/>
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <aura:handler event="c:KC_AddItemToCart" action="{!c.doInit}"/>
+    <aura:registerEvent name="sendAddToCart" type="c:KC_AddItemToCart"/>
+    <lightning:card>
+        <aura:if isTrue="{!empty(v.records)}">
+            <div class="slds-size_1-of-2 slds-container_center">
+                <h1 class="slds-text-heading_medium slds-text-align--center">There are not items in cart</h1>
+                <lightning:button variant="brand" class="slds-align_absolute-center" label="Back to homepage"
+                                  title="Back to homepage" onclick="{!c.redirectToHome}"/>
+            </div>
+        </aura:if>
+            <aura:iteration items="{!v.records}" var="item" indexVar="index">
+                <div class="slds-col">
+                    <c:KC_CartItem record="{!item}"/>
+                </div>
+            </aura:iteration>
+
+        <aura:if isTrue="{!not(empty(v.records))}">
+            <div class="slds-border_top slds-container_center slds-size_8-of-12 slds-text-align_right slds-p-top_x-small">
+                <h1 class="slds-text-heading_medium slds-p-bottom--medium">Total price:
+                    <lightning:formattedNumber value="{!v.totalPrice}" style="currency"/>
+                </h1>
+                   <!-- <lightning:button variant="brand" class="slds-align_absolute-right" label="Make an order"
+                                      title="Make an order" onclick="{!c.showOrderModal}"/>-->
+            </div>
+        </aura:if>
+
+    </lightning:card>
+    <aura:if isTrue="{!not(empty(v.toasterMessage))}">
+        <c:KC_Toaster toasterType="{!v.toasterType}" toasterMessage="{!v.toasterMessage}"
+                      toasterTitle="{!v.toasterTitle}"/>
+    </aura:if>
+</aura:component>

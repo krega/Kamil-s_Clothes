@@ -1,0 +1,15 @@
+<aura:component description="KC_CartController" controller="KC_CartController">
+    <aura:attribute name="productCount" type="Integer"/>
+    <aura:attribute type="String" name="toasterMessage"/>
+    <aura:attribute type="String" name="toasterType"/>
+    <aura:attribute type="String" name="toasterTitle"/>
+    <aura:handler event="c:KC_AddItemToCart" action="{!c.calculateItems}"/>
+ <aura:handler name="init" value="{!this}" action="{!c.calculateItems}"/>
+     <div onclick="{!c.redirectToCartPage}">
+        <lightning:icon iconName="utility:cart" alternativeText="Cart"/>
+        <lightning:badge label="{!v.productCount}" />
+     </div>
+    <aura:if isTrue="{!not(empty(v.toasterMessage))}">
+        <c:KC_Toaster toasterType="{!v.toasterType}" toasterMessage="{!v.toasterMessage}" toasterTitle="{!v.toasterTitle}"/>
+    </aura:if>
+</aura:component>

@@ -18,8 +18,8 @@
                 <div class="searchRegion slds-col">
                         {!v.search}
                 </div>
-                <div class="slds-p-horizontal_small ">
-
+               <div class="slds-p-horizontal_small ">
+                    <c:KC_CartController/>
                 </div>
                 <div class="notificationsRegion slds-p-left_medium">
                     <forceCommunity:notifications/>
@@ -33,4 +33,5 @@
         <div class="mainContentArea">
                 {!v.body}
         </div>
+
     </aura:component>

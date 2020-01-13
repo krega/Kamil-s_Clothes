@@ -1,0 +1,46 @@
+<aura:component description="KC_CartItem" controller="KC_CartController">
+        <aura:attribute name="record" type="Object"/>
+        <aura:attribute type="String" name="toasterMessage"/>
+        <aura:attribute type="String" name="toasterType"/>
+        <aura:attribute type="String" name="toasterTitle"/>
+        <aura:registerEvent name="sendAddToCart" type="c:KC_AddItemToCart"/>
+          <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+        <div class="slds-grid slds-container_center slds-size_2-of-3">
+            <div class="slds-col">
+                <div class="slds-grid ">
+                    <div class="slds-col slds-size_1-of-5">
+                        <img src="{!v.record.Product2.PhotoId__c}" alt="photo"/>
+                    </div>
+                    <div class="slds-col slds-grid slds-size_4-of-5">
+                        <div class="slds-col slds-size_1-of-2">
+                            <div class="slds-col slds-size_11-of-12">
+                                <span  >Category: </span> <span class="slds-text-heading_medium">{!v.record.Product2.Family}</span>
+                            </div>
+                            <div class="slds-col slds-size_11-of-12">
+                         <span>Name: </span>   <span class="slds-text-heading_medium">{!v.record.Name}</span>
+                            </div>
+                            <div class="slds-col slds-size_11-of-12">
+                           <span>Size:  </span> <span class="slds-text-heading_medium">{!v.record.Product2.Size__c}</span>
+                            </div>
+
+                        </div>
+                        <div class="slds-col slds-size_1-of-6 slds-m-horizontal--small">
+                            <lightning:buttonIcon iconName="utility:add" variant="container" onclick="{!c.addItem}" alternativeText="Add icon" />
+                            <lightning:badge label="{!v.record.Count}"/>
+                            <lightning:buttonIcon iconName="utility:dash" variant="container" onclick="{!c.removeItem}" alternativeText="Remove icon" />
+                        </div>
+                        <div class="slds-col slds-text-align--right slds-size--1-of-10">
+                            <h1 class="slds-text-heading_medium "><lightning:formattedNumber value="{!v.record.Count*v.record.UnitPrice}" style="currency"/></h1>
+                            <aura:if isTrue="{!v.record.Count>1}">
+                                Price per product: <lightning:formattedNumber value="{!v.record.UnitPrice}" style="currency"/>
+                            </aura:if>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <aura:if isTrue="{!not(empty(v.toasterMessage))}">
+            <c:KC_Toaster toasterType="{!v.toasterType}" toasterMessage="{!v.toasterMessage}" toasterTitle="{!v.toasterTitle}"/>
+        </aura:if>
+    </aura:component>

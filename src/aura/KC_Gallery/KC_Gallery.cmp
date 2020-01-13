@@ -1,0 +1,19 @@
+
+
+    <aura:component description="KC_Gallery" >
+        <aura:attribute type="Object[]" name="photos"/>
+        <aura:attribute type="String" name="featurePhoto"/>
+        <aura:attribute type="String" name="recordId"/>
+        <div class="slds-grid">
+            <div class="slds-col">
+                <img src="{!v.featurePhoto}" alt="zdjecia"/>
+            </div>
+        </div>
+        <div class="slds-grid slds-gutters">
+            <aura:iteration items="{!v.photos}" var="photo">
+                <div class="slds-col galleryMaxHeight">
+                    <img src="{!photo.ContentDownloadUrl}"  data-url="{!photo.ContentDownloadUrl}" onclick="{!c.setFeaturedPhoto}"/>
+                </div>
+            </aura:iteration>
+        </div>
+    </aura:component>
