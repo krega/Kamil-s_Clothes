@@ -1,6 +1,4 @@
-/**
- * Created by BRITENET on 03.12.2019.
- */
+
 
 public with sharing class KC_DivisionSearchController {
 

@@ -1,3 +1,0 @@
-<design:component label="Search for Products">
-    <!--<design:attribute name="stringQuery" label="Query String"/>-->
-</design:component>

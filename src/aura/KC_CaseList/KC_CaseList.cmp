@@ -1,0 +1,56 @@
+<!--
+ - Created by BRITENET on 15.01.2020.
+ -->
+
+<aura:component description="KC_CaseList" implements="forceCommunity:availableForAllPageTypes" access="global" controller="KC_ComplainsController">
+
+        <aura:attribute type="List" name="userCases"/>
+        <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+
+        <lightning:layout horizontalAlign="center" class="slds-m-bottom--xx-large slds-m-top--xx-large">
+            <h1 class="slds-text-heading--large">Your Cases</h1>
+        </lightning:layout>
+
+        <table class="slds-table slds-table_cell-buffer slds-table_bordered">
+            <thead>
+            <tr class="slds-line-height_reset">
+                <th class="" scope="col">
+                    <div class="slds-truncate" title="Opportunity Name">Number</div>
+                </th>
+                <th class="" scope="col">
+                    <div class="slds-truncate" title="Opportunity Name">Order Number</div>
+                </th>
+                <th class="" scope="col">
+                    <div class="slds-truncate" title="Opportunity Name">Case Subject</div>
+                </th>
+                <th class="" scope="col">
+                    <div class="slds-truncate" title="Opportunity Name">Status</div>
+                </th>
+                <th class="" scope="col">
+                    <div class="slds-truncate" title="Opportunity Name">Action</div>
+                </th>
+            </tr>
+            </thead>
+            <tbody>
+            <aura:iteration items="{!v.userCases}" var="userCase" indexVar="caseIndex">
+                <tr class="slds-hint-parent" id="{!caseIndex}">
+                    <td>
+                        <p>{!userCase.CaseNumber}</p>
+                    </td>
+                    <td>
+                        <p>{!userCase.Order__r.OrderNumber}</p>
+                    </td>
+                    <td>
+                        <p>{!userCase.Subject}</p>
+                    </td>
+                    <td>
+                        <p>{!userCase.Status}</p>
+                    </td>
+                    <td id="{!caseIndex}">
+                        <lightning:button onclick="{!c.showDetails}">Details</lightning:button>
+                    </td>
+                </tr>
+            </aura:iteration>
+            </tbody>
+        </table>
+    </aura:component>

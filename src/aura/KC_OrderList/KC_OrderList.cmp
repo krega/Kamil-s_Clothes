@@ -1,0 +1,67 @@
+<aura:component description="KC_OrderList" implements="forceCommunity:availableForAllPageTypes" access="global" controller="KC_OrdersController">
+        <aura:attribute name="allOrders" type="Object[]"/>
+        <aura:attribute name="selectedOrder" type="Object"/>
+        <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+
+    <aura:if isTrue="{!empty(v.allOrders)}">
+        <lightning:card>
+        <div class="slds-size_1-of-2 slds-container_center">
+            <h1 class="slds-text-heading_medium slds-text-align--center">There are not items in cart</h1>
+            <lightning:button variant="brand" class="slds-align_absolute-center" label="Back to homepage"
+                              title="Back to homepage" onclick="{!c.redirectToHome}"/>
+            </div>
+        </lightning:card>
+    </aura:if>
+    <aura:if isTrue="{!!empty(v.allOrders)}">
+        <div class="slds-grid slds-gutters">
+            <div class="slds-col">
+                <lightning:card title="My Orders" class="slds-p-around--small">
+                    <table class="slds-table slds-table--bordered">
+                        <thead>
+                        <tr>
+                            <th scope="col"><span class="slds-truncate">Number</span></th>
+                            <th scope="col"><span class="slds-truncate">Order Amount</span></th>
+                            <th scope="col"><span class="slds-truncate">Status</span></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <aura:iteration items="{!v.allOrders}" var="order" indexVar="index">
+                            <tr onclick="{!c.showDetails}" data-index="{!index}">
+                                <td>{!order.order.OrderNumber}</td>
+                                <td>
+                                    <lightning:formattedNumber value="{!order.order.TotalAmount}" style="currency"/>
+                                </td>
+                                <td>{!order.order.Status}</td>
+                            </tr>
+                        </aura:iteration>
+                        </tbody>
+                    </table>
+                </lightning:card>
+            </div>
+            <div class="slds-col">
+                <aura:if isTrue="{!not(empty(v.selectedOrder))}">
+                    <lightning:card title="Order details" class="slds-p-around--small">
+                        <table class="slds-table slds-table--bordered">
+                            <thead>
+                            <tr>
+                                <th scope="col"><span class="slds-truncate">{!$Label.c.KC_ProductName}</span></th>
+                                <th scope="col"><span class="slds-truncate">{!$Label.c.KC_UnitPrice}</span></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <aura:iteration items="{!v.selectedOrder.orderItems}" var="orderItem">
+                                <tr>
+                                    <td>{!orderItem.Product2.Name}</td>
+                                    <td>
+                                        <lightning:formattedNumber value="{!orderItem.UnitPrice}" style="currency"/>
+                                    </td>
+                                </tr>
+                            </aura:iteration>
+                            </tbody>
+                        </table>
+                    </lightning:card>
+                </aura:if>
+            </div>
+        </div>
+    </aura:if>
+    </aura:component>

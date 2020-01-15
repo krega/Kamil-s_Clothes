@@ -9,6 +9,7 @@ public with sharing class KC_ProductController {
         ];
         return prices[0].UnitPrice;
     }
+
     @AuraEnabled
     public static PricebookEntry getProductInfo(String id){
         List<PricebookEntry> entries = [SELECT PriceBook2.Name, Product2.Id, Product2.Description, Product2.PhotoId__c, Product2.Name FROM PricebookEntry WHERE Product2Id = :id];
@@ -21,17 +22,6 @@ public with sharing class KC_ProductController {
     public static List<KC_Product_Photo__c> productPhotos(String id) {
         List<KC_Product_Photo__c> photos = [SELECT Id, Product__c, ImgUrl__c FROM KC_Product_Photo__c WHERE Product__c = :id];
         return photos;
-    }
-
-    @AuraEnabled
-    public static List<ContentDistribution> getRelatedImages(String productId) {
-        List<ContentDistribution> listProd = [
-                SELECT Id,ContentDownloadUrl,ContentVersionId,Name
-                FROM ContentDistribution
-                WHERE Name = :productId
-        ];
-        System.debug(listProd);
-        return listProd;
     }
 
     @AuraEnabled

@@ -1,15 +1,42 @@
 <aura:component description="KC_CartController" controller="KC_CartController">
-    <aura:attribute name="productCount" type="Integer"/>
+    <aura:attribute  type="Integer" name="productCount"/>
     <aura:attribute type="String" name="toasterMessage"/>
     <aura:attribute type="String" name="toasterType"/>
     <aura:attribute type="String" name="toasterTitle"/>
+    <aura:attribute type="Object[]" name="records"/>
+    <aura:attribute type="String" name="totalPrice"/>
+    <aura:registerEvent name="sendAddToCart" type="c:KC_AddItemToCart"/>
     <aura:handler event="c:KC_AddItemToCart" action="{!c.calculateItems}"/>
- <aura:handler name="init" value="{!this}" action="{!c.calculateItems}"/>
-     <div onclick="{!c.redirectToCartPage}">
-        <lightning:icon iconName="utility:cart" alternativeText="Cart"/>
-        <lightning:badge label="{!v.productCount}" />
-     </div>
+    <aura:handler name="init" value="{!this}" action="{!c.calculateItems}"/>
+
+    <div  onmouseover="{!c.openPop}"   onmouseout="{!c.closePop}">
+        <div onclick="{!c.redirectToCartPage}">
+            <lightning:icon iconName="utility:cart" alternativeText="Cart"/>
+            <lightning:badge label="{!v.productCount}" />
+
+        <section aura:id="pop" class="slds-popover slds-nubbin_top slds-hide" role="dialog"
+                 aria-labelledby="dialog-heading-id-1" aria-describedby="dialog-body-id-6">
+            <div class="slds-popover__body" id="dialog-body-id-6">
+                <aura:iteration items="{!v.records}" var="item" indexVar="index">
+                    <div class="slds-col">
+                        <c:KC_HoverItem record="{!item}"/>
+                    </div>
+                </aura:iteration>
+            </div>
+            <footer class="slds-popover__footer">
+                <center>
+                    <div>
+                        <h1 class="slds-text-heading_medium slds-p-bottom--medium">{!$Label.c.KC_TotalPrice}
+                            <lightning:formattedNumber value="{!v.totalPrice}" style="currency"/>
+                        </h1>
+                    </div>
+                </center>
+            </footer>
+        </section>
+        </div>
+    </div>
     <aura:if isTrue="{!not(empty(v.toasterMessage))}">
-        <c:KC_Toaster toasterType="{!v.toasterType}" toasterMessage="{!v.toasterMessage}" toasterTitle="{!v.toasterTitle}"/>
+        <c:KC_Toaster toasterType="{!v.toasterType}" toasterMessage="{!v.toasterMessage}"
+                      toasterTitle="{!v.toasterTitle}"/>
     </aura:if>
 </aura:component>

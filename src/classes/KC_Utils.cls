@@ -1,7 +1,3 @@
-/**
- * Created by BRITENET on 09.01.2020.
- */
-
 public with sharing class KC_Utils {
     public static String checkIfNull(String param) {
         if (param == null) {
@@ -10,4 +6,15 @@ public with sharing class KC_Utils {
         return param;
     }
 
+    public static User getCurrentUser() {
+        return getUser(UserInfo.getUserId());
+    }
+
+    public static User getUser(String userId) {
+        List<User> users = [SELECT Id,Username,Country FROM User WHERE Id = :userId];
+        if (users.isEmpty()) {
+            return null;
+        }
+        return users[0];
+    }
 }

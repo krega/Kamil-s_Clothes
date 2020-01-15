@@ -27,7 +27,6 @@
                             result.Count = countValue[0].count;
                             totalPrice += result.Count * result.UnitPrice;
                         });
-                        console.log(totalPrice);
                         component.set("v.totalPrice",totalPrice);
                         component.set("v.records",results);
                     }else if(state === 'ERROR'){
@@ -77,7 +76,9 @@
             let status = response.getState();
             if (status === 'SUCCESS'){
                 component.set("v.orderModal", false);
-
+                component.set('v.toasterType','info');
+                component.set('v.toasterTitle', 'Item was ordered');
+                component.set('v.toasterMessage','You can check status of your oder in Order tab');
                 let urlEvent = $A.get("e.force:navigateToURL");
                 urlEvent.setParams({
                     "url": '/s/',

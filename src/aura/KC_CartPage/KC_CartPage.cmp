@@ -5,9 +5,16 @@
     <aura:attribute type="String" name="toasterMessage"/>
     <aura:attribute type="String" name="toasterType"/>
     <aura:attribute type="String" name="toasterTitle"/>
+    <aura:attribute type="Boolean" name="orderModal" default="false"/>
+    <aura:attribute type="String" name="billingStreet"/>
+    <aura:attribute type="String" name="billingPostalCode"/>
+    <aura:attribute type="String" name="billingState"/>
+    <aura:attribute type="String" name="billingCountry"/>
+    <aura:attribute type="String" name="billingCity"/>
     <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
     <aura:handler event="c:KC_AddItemToCart" action="{!c.doInit}"/>
     <aura:registerEvent name="sendAddToCart" type="c:KC_AddItemToCart"/>
+
     <lightning:card>
         <aura:if isTrue="{!empty(v.records)}">
             <div class="slds-size_1-of-2 slds-container_center">
@@ -16,22 +23,70 @@
                                   title="Back to homepage" onclick="{!c.redirectToHome}"/>
             </div>
         </aura:if>
-            <aura:iteration items="{!v.records}" var="item" indexVar="index">
-                <div class="slds-col">
-                    <c:KC_CartItem record="{!item}"/>
-                </div>
-            </aura:iteration>
-
+        <aura:iteration items="{!v.records}" var="item" indexVar="index">
+            <div class="slds-col">
+                <c:KC_CartItem record="{!item}"/>
+            </div>
+        </aura:iteration>
         <aura:if isTrue="{!not(empty(v.records))}">
             <div class="slds-border_top slds-container_center slds-size_8-of-12 slds-text-align_right slds-p-top_x-small">
-                <h1 class="slds-text-heading_medium slds-p-bottom--medium">Total price:
+                <h1 class="slds-text-heading_medium slds-p-bottom--medium">{!$Label.c.KC_TotalPrice}
                     <lightning:formattedNumber value="{!v.totalPrice}" style="currency"/>
                 </h1>
-                   <!-- <lightning:button variant="brand" class="slds-align_absolute-right" label="Make an order"
-                                      title="Make an order" onclick="{!c.showOrderModal}"/>-->
+                <lightning:button class="slds-button slds-m-left--large slds-m-top--x-small slds-m-right--x-small" onclick="{!c.showOrderModal}">{!$Label.c.KC_MakeAnOrder}
+                    <lightning:icon iconName="utility:forward" size="x-small" class="slds-m-top--x-small slds-m-bottom--x-small slds-m-left--small"/>
+                </lightning:button>
             </div>
-        </aura:if>
+            <aura:if isTrue="{!v.orderModal}">
+                <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true"
+                         aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open slds-modal_medium">
+                    <div class="slds-modal__container">
+                        <header class="slds-modal__header">
+                            <lightning:buttonIcon iconName="utility:close"
+                                                  onclick="{! c.closeOrderModal }"
+                                                  alternativeText="close"
+                                                  variant="bare-inverse"
+                                                  class="slds-modal__close"/>
+                            <h2 id="modal-heading-01" class="slds-modal__title slds-hyphenate">{!$Label.c.KC_OrderDetail}</h2>
+                        </header>
+                        <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+                            <lightning:input label="Billing Street" value="{!v.billingStreet}"/>
+                            <lightning:input label="Postal Code" value="{!v.billingPostalCode}"/>
+                            <lightning:input label="State" value="{!v.billingState}"/>
+                            <lightning:input label="Country" value="{!v.billingCountry}"/>
+                            <lightning:input label="City" value="{!v.billingCity}"/>
+                            <table class="slds-table slds-table--bordered">
+                                <thead>
+                                <tr>
+                                    <th scope="col"><span class="slds-truncate">Name</span></th>
+                                    <th scope="col"><span class="slds-truncate">Quantity</span></th>
+                                    <th scope="col"><span class="slds-truncate">Unit Price</span></th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <aura:iteration items="{!v.records}" var="record" indexVar="index">
+                                    <tr>
+                                        <td>{!record.Name}</td>
+                                        <td>{!record.Count}</td>
+                                        <td>
+                                            <lightning:formattedNumber value="{!record.UnitPrice}" style="currency"/>
+                                        </td>
+                                    </tr>
+                                </aura:iteration>
+                                </tbody>
+                            </table>
+                            <h1 class="slds-text-heading_medium slds-text-align_right slds-m-top_small">Total Price: <lightning:formattedNumber value="{!v.totalPrice}" style="currency"/></h1>
+                        </div>
+                        <footer class="slds-modal__footer">
+                            <button class="slds-button slds-button_neutral" onclick="{!c.closeOrderModal}">	{!$Label.c.KC_Close}</button>
+                            <button class="slds-button slds-button_brand" onclick="{!c.makeAnOrder}">		{!$Label.c.KC_Save}</button>
+                        </footer>
+                    </div>
+                </section>
+                <div class="slds-backdrop slds-backdrop_open"></div>
+            </aura:if>
 
+        </aura:if>
     </lightning:card>
     <aura:if isTrue="{!not(empty(v.toasterMessage))}">
         <c:KC_Toaster toasterType="{!v.toasterType}" toasterMessage="{!v.toasterMessage}"

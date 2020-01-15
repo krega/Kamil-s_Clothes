@@ -1,7 +1,3 @@
-/**
- * Created by BRITENET on 09.01.2020.
- */
-
 public with sharing class KC_CartController {
     @AuraEnabled
     public static String getCartElements() {
@@ -15,46 +11,93 @@ public with sharing class KC_CartController {
         sessionPartition.put('CartItems', cartElements);
         return (String) sessionPartition.get('CartItems');
     }
-    public static void deleteAllCustomerCartItems() {
+    private static void deleteAllCustomerCartItems() {
         if (Cache.Session.contains('local.Cart.CartItems')) {
             Cache.Session.remove('local.Cart.CartItems');
         }
     }
-/*    @AuraEnabled
-    public static List<PricebookEntry> getProductsWithPrices(String[] productIds) {
-
-        List<PricebookEntry> products = [
-                SELECT Name,Product2Id,UnitPrice,Product2.Name,Product2.PhotoId__c
-                FROM PricebookEntry
-                WHERE Product2Id IN :productIds AND IsActive = true
-                ORDER BY UnitPrice DESC
-        ];
-        Map<Id, Decimal> minimalPrices = RIF_CommunitySearchController.getMinimalPriceOfProducts(products);
-        Map<Id, PricebookEntry> uniqueProducts = new Map<Id, PricebookEntry>();
-        for (PricebookEntry result : products) {
-            if (!uniqueProducts.containsKey(result.Product2Id)) {
-                uniqueProducts.put(result.Product2Id, result);
-            }
-        }
-        for (PricebookEntry uniqueProduct : uniqueProducts.values()) {
-            uniqueProduct.UnitPrice = minimalPrices.get(uniqueProduct.Product2Id);
-        }
-        return uniqueProducts.values();
-    }*/
     @AuraEnabled
     public static List<PricebookEntry> getProductsWithPrices(String[] productIds) {
-        /*string val1 = '01t3X00000GE0r4QAD';
-        string val2 = '01t3X00000GE0LPQA1';
-        String [] productIds = new List<String>();
-        productIds.add(val1);
-        productIds.add(val2);*/
         List<PricebookEntry> prices = [
                 SELECT Name,Product2Id,UnitPrice,Product2.Name,Product2.PhotoId__c, Product2.Family,Product2.Size__c
                 FROM PricebookEntry
                 WHERE Product2Id IN :productIds AND IsActive = true
                 ORDER BY UnitPrice DESC
         ];
-        System.debug(prices);
         return prices;
     }
+
+    @AuraEnabled
+    public static void postAnOrder(String newOrderPram){
+        NewOrderWrapper newOrder = (NewOrderWrapper)JSON.deserialize(newOrderPram,NewOrderWrapper.class);
+        Order__c orderFromModal = Order__c.getInstance();
+        Pricebook2 standardPriceBook = [SELECT Id FROM Pricebook2 WHERE IsStandard = true];
+        Order orderToAdd = new Order();
+        orderToAdd.AccountId = orderFromModal.AccountId__c;
+        orderToAdd.ContractId = orderFromModal.ContractId__c;
+        orderToAdd.BillingStreet = newOrder.BillingStreet;
+        orderToAdd.BillingPostalCode = newOrder.BillingPostalCode;
+        orderToAdd.BillingState = newOrder.BillingState;
+        orderToAdd.BillingCountry = newOrder.BillingCountry;
+        orderToAdd.BillingCity = newOrder.BillingCity;
+        orderToAdd.Status = 'Draft';
+        orderToAdd.EndDate = Date.today().addDays(30);
+        orderToAdd.EffectiveDate = Date.today();
+        orderToAdd.Pricebook2Id = standardPriceBook.Id;
+        try {
+            insert orderToAdd;
+        } catch (System.DmlException e) {
+            throw new AuraHandledException('Error creating order');
+        }
+        List<OrderItem> items = new List<OrderItem>();
+
+        if (!newOrder.Items.isEmpty()) {
+            for (Items item : newOrder.Items){
+                OrderItem tmpItem = new OrderItem();
+                tmpItem.UnitPrice = item.UnitPrice;
+                tmpItem.Quantity = item.Count;
+                tmpItem.PricebookEntryId = item.Id;
+                tmpItem.Product2Id = item.Product2Id;
+                tmpItem.OrderId = orderToAdd.Id;
+                items.add(tmpItem);
+            }
+        }
+        try {
+            insert items;
+        } catch (System.DmlException e) {
+            throw new AuraHandledException('Error creating order');
+        }
+        deleteAllCustomerCartItems();
+    }
+    public class NewOrderWrapper{
+        @AuraEnabled
+        public List<Items> Items;
+        @AuraEnabled
+        public String BillingStreet;
+        @AuraEnabled
+        public String BillingPostalCode;
+        @AuraEnabled
+        public String BillingState;
+        @AuraEnabled
+        public String BillingCountry;
+        @AuraEnabled
+        public String BillingCity;
+        @AuraEnabled
+        public Decimal TotalPrice;
+    }
+    public class Items {
+        @AuraEnabled
+        public String Name;
+        @AuraEnabled
+        public String Product2Id;
+        @AuraEnabled
+        public Integer UnitPrice;
+        @AuraEnabled
+        public String Id;
+        @AuraEnabled
+        public Product2 Product2;
+        @AuraEnabled
+        public Integer Count;
+    }
+
 }

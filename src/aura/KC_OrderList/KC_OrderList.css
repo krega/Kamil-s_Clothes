@@ -1,0 +1,15 @@
+/**
+ * Created by BRITENET on 14.01.2020.
+ */
+.THIS .slds-p-around--small{
+       background-color: #DEEBEC;
+}
+.THIS .slds-table--bordered tbody td{
+ background-color: #DEEBEC;
+ }
+  .THIS .slds-table thead th {
+    background-color: #DEEBEC;
+}
+.THIS .slds-truncate.selectedRow{
+     color:#54698d;
+  }

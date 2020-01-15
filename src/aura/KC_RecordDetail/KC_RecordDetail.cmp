@@ -15,21 +15,19 @@
     <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
 
     <aura:registerEvent name="sendAddToCart" type="c:KC_AddItemToCart"/>
-    <div class="slds-grid slds-gutters">
-    </div>
+
     <div class="slds-grid slds-container--center slds-m-top--medium">
         <lightning:card class="slds-col slds-size_1-of-1">
-            <div class="slds-grid slds-gutters">
-                <div class="slds-col">
-
-                    <img src="{!v.photoPath}" width="400" height="800" class="productimg"/>
-                    <div class="photoGallery">
+            <div class="slds-grid slds-gutters" >
+                <div class="slds-grid slds-grid_vertical" >
+                    <div class="slds-col" >
                         <aura:iteration var="photo" items="{!v.photos}" indexVar="index">
-                            <img src="{!photo.ImgUrl__c}" width="50" height="100" class="galleryicon" aura:id="resultItem"
+                            <img src="{!photo.ImgUrl__c}" width="60" height="100"   aura:id="resultItem"
                                  data-id="{!index}" onclick="{!c.selectPhoto}"/>
                         </aura:iteration>
                     </div>
                 </div>
+                    <img src="{!v.photoPath}" width="400" height="800"/>
                 <div class="slds-col slds-size_2-of-3">
                     <lightning:recordForm
                             recordId="{!v.recordId}"
@@ -44,7 +42,6 @@
             </div>
         </lightning:card>
     </div>
-
     <aura:if isTrue="{!not(empty(v.toasterMessage))}">
         <c:KC_Toaster toasterType="{!v.toasterType}" toasterMessage="{!v.toasterMessage}"
                       toasterTitle="{!v.toasterTitle}"/>
