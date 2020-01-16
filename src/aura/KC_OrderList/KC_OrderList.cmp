@@ -1,6 +1,7 @@
 <aura:component description="KC_OrderList" implements="forceCommunity:availableForAllPageTypes" access="global" controller="KC_OrdersController">
         <aura:attribute name="allOrders" type="Object[]"/>
         <aura:attribute name="selectedOrder" type="Object"/>
+         <aura:attribute type="Boolean" name="showSupportForm"/>
         <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
 
     <aura:if isTrue="{!empty(v.allOrders)}">
@@ -14,7 +15,7 @@
     </aura:if>
     <aura:if isTrue="{!!empty(v.allOrders)}">
         <div class="slds-grid slds-gutters">
-            <div class="slds-col">
+                <div class="slds-col">
                 <lightning:card title="My Orders" class="slds-p-around--small">
                     <table class="slds-table slds-table--bordered">
                         <thead>
@@ -49,19 +50,36 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <aura:iteration items="{!v.selectedOrder.orderItems}" var="orderItem">
+                            <aura:iteration items="{!v.selectedOrder.orderItems}" var="orderItem" indexVar="index">
+
                                 <tr>
-                                    <td>{!orderItem.Product2.Name}</td>
+                                    <td data-index="{!index}" onclick="{!c.redirectToDetailPage}">{!orderItem.Product2.Name}</td>
                                     <td>
                                         <lightning:formattedNumber value="{!orderItem.UnitPrice}" style="currency"/>
                                     </td>
                                 </tr>
+
                             </aura:iteration>
                             </tbody>
                         </table>
                     </lightning:card>
+                    <lightning:layout horizontalAlign="center" class="slds-m-bottom--large">
+                        <p>
+                           Do you have a problem?
+                            <a href="" onclick="{!c.showSupportForm}">Contact Us</a>
+                        </p>
+
+                    </lightning:layout>
+
+                    <aura:if isTrue="{!v.showSupportForm}">
+                        <hr class="slds-m-top--large slds-m-bottom--large"/>
+                        <lightning:layout horizontalAlign="spread">
+                            <c:KC_ComplainCase orderId="{!v.selectedOrder.order.Id}" showForm="{!v.showSupportForm}"/>
+                        </lightning:layout>
+                    </aura:if>
                 </aura:if>
             </div>
         </div>
+
     </aura:if>
     </aura:component>

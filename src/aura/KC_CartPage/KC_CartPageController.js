@@ -12,11 +12,7 @@
     },
     showOrderModal: function(component, event, helper) {
         component.set("v.orderModal", true);
-        component.set("v.billingStreet", '');
-        component.set("v.billingPostalCode", '');
-        component.set("v.billingState", '');
-        component.set("v.billingCountry", '');
-        component.set("v.billingCity", '');
+         helper.fillOrderModal(component);
     },
     closeOrderModal: function(component, event, helper) {
         component.set("v.orderModal", false);

@@ -1,12 +1,13 @@
 .THIS .logoRegion {
     background-image: t('url(' + brandLogoImage  + ')');
-    background-position: center;
+
     background-repeat: no-repeat;
     background-size: contain;
     z-index: 99;
     cursor: pointer;
     position: relative;
-    max-width: 100%;
+    left:5px;
+    max-width:10rem;
     max-height: 52px;
     display: block;
     outline: 0;
@@ -45,8 +46,11 @@
 }
 .THIS .forceCommunityGlobalNavigation {
     height : 3rem;
+    left:76px;
+    width:40rem;
 }
 .THIS .forceCommunityGlobalNavigation .slds-list__item a{
+
       height : 3rem;
      padding-top : 15px;
 }

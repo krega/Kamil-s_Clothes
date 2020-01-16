@@ -9,5 +9,8 @@
            }
         });
         $A.enqueueAction(action);
-    }
+    },
+     showSupportForm: function (component) {
+            component.set('v.showSupportForm', true)
+        }
 });

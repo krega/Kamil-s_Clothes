@@ -1,0 +1,28 @@
+<aura:component description="KC_ComplainCase" controller="KC_ComplainsController">
+    <aura:attribute type="Boolean" name="showForm"/>
+    <aura:attribute type="String" name="orderId"/>
+    <aura:attribute type="String" name="caseSubject"/>
+    <aura:attribute type="String" name="caseDescription"/>
+
+    <lightning:card  class="slds-p-around--xx-large">
+        <div class="caseContainer">
+
+            <div class="slds-m-bottom--medium">
+                <p class="slds-text-heading_small slds-m-bottom--small">Case subject</p>
+                <lightning:input label="" variant="label-hidden" type="text" value="{!v.caseSubject}"/>
+            </div>
+            <div>
+                <p class="slds-text-heading_small slds-m-bottom--small">Describe problem</p>
+                <lightning:textarea class="caseBody" name="myTextArea" value="{!v.caseDescription}"
+                                    label="" variant="label-hidden" maxlength="1000"/>
+            </div>
+            <lightning:layout horizontalAlign="center">
+                <lightning:button onclick="{!c.cancelCase}" class="slds-button_text-destructive">Cancel
+                </lightning:button>
+                <lightning:button onclick="{!c.createCase}">Send</lightning:button>
+            </lightning:layout>
+
+        </div>
+    </lightning:card>
+
+</aura:component>

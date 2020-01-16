@@ -12,17 +12,14 @@
                 <div class="logoRegion slds-col">
 
                 </div>
-                <div class="navigation slds-col slds-size--1-of-6">
+                <div class="navigation slds-col slds-size--1-of-4">
                         {!v.navBar}
                 </div>
-                <div class="searchRegion slds-col">
+                <div class="searchRegion slds-col slds-size--1-of-3">
                         {!v.search}
                 </div>
                <div class="slds-p-horizontal_small ">
-                    <c:KC_CartController/>
-                </div>
-                <div class="slds-p-horizontal_small ">
-                    <c:KC_CartController/>
+                    <c:KC_Cart/>
                 </div>
                 <div class="notificationsRegion slds-p-left_medium">
                     <forceCommunity:notifications/>

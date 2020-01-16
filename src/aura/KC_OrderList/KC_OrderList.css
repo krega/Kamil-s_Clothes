@@ -13,3 +13,8 @@
 .THIS .slds-truncate.selectedRow{
      color:#54698d;
   }
+.THIS .slds-p-around--xx-large{
+       background-color: #DEEBEC;
+       width:100%;
+       height:25rem;
+}

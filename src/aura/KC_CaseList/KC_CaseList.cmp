@@ -1,56 +1,74 @@
-<!--
- - Created by BRITENET on 15.01.2020.
- -->
 
-<aura:component description="KC_CaseList" implements="forceCommunity:availableForAllPageTypes" access="global" controller="KC_ComplainsController">
+<aura:component description="KC_CaseList" implements="forceCommunity:availableForAllPageTypes" access="global"
+                controller="KC_ComplainsController">
+    <aura:attribute type="Boolean" name="showCaseDetails"/>
+    <aura:attribute type="Object[]" name="userCases"/>
+    <aura:attribute type="Object" name="selectedOrder"/>
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
 
-        <aura:attribute type="List" name="userCases"/>
-        <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
-
-        <lightning:layout horizontalAlign="center" class="slds-m-bottom--xx-large slds-m-top--xx-large">
-            <h1 class="slds-text-heading--large">Your Cases</h1>
-        </lightning:layout>
-
-        <table class="slds-table slds-table_cell-buffer slds-table_bordered">
-            <thead>
-            <tr class="slds-line-height_reset">
-                <th class="" scope="col">
-                    <div class="slds-truncate" title="Opportunity Name">Number</div>
-                </th>
-                <th class="" scope="col">
-                    <div class="slds-truncate" title="Opportunity Name">Order Number</div>
-                </th>
-                <th class="" scope="col">
-                    <div class="slds-truncate" title="Opportunity Name">Case Subject</div>
-                </th>
-                <th class="" scope="col">
-                    <div class="slds-truncate" title="Opportunity Name">Status</div>
-                </th>
-                <th class="" scope="col">
-                    <div class="slds-truncate" title="Opportunity Name">Action</div>
-                </th>
-            </tr>
-            </thead>
-            <tbody>
-            <aura:iteration items="{!v.userCases}" var="userCase" indexVar="caseIndex">
-                <tr class="slds-hint-parent" id="{!caseIndex}">
-                    <td>
-                        <p>{!userCase.CaseNumber}</p>
-                    </td>
-                    <td>
-                        <p>{!userCase.Order__r.OrderNumber}</p>
-                    </td>
-                    <td>
-                        <p>{!userCase.Subject}</p>
-                    </td>
-                    <td>
-                        <p>{!userCase.Status}</p>
-                    </td>
-                    <td id="{!caseIndex}">
-                        <lightning:button onclick="{!c.showDetails}">Details</lightning:button>
-                    </td>
+    <lightning:layout horizontalAlign="center" class="slds-m-bottom--xx-large slds-m-top--xx-large">
+        <h1 class="slds-text-heading--large">Your Complaints</h1>
+    </lightning:layout>
+    <div class="slds-grid slds-gutters">
+        <div class="slds-col">
+            <table class="slds-table slds-table_cell-buffer slds-table_bordered">
+                <thead>
+                <tr class="slds-line-height_reset">
+                    <th class="" scope="col">
+                        <div class="slds-truncate" title="Opportunity Name">Number</div>
+                    </th>
+                    <th class="" scope="col">
+                        <div class="slds-truncate" title="Opportunity Name">Order Number</div>
+                    </th>
+                    <th class="" scope="col">
+                        <div class="slds-truncate" title="Opportunity Name">Status</div>
+                    </th>
+                    <th class="" scope="col">
+                        <div class="slds-truncate" title="Opportunity Name">Action</div>
+                    </th>
                 </tr>
-            </aura:iteration>
-            </tbody>
-        </table>
-    </aura:component>
+                </thead>
+                <tbody>
+                <aura:iteration items="{!v.userCases}" var="userCase" indexVar="index">
+
+                    <tr class="slds-hint-parent">
+                        <td>
+                            <p>{!userCase.CaseNumber}</p>
+                        </td>
+                        <td>
+                            <p>{!userCase.Order__r.OrderNumber}</p>
+                        </td>
+                        <td>
+                            <p>{!userCase.Status}</p>
+                        </td>
+                        <td>
+                            <div data-index="{!index}" onclick="{!c.showDetails}">
+                                <lightning:button onclick="{!c.showDetails}">Details</lightning:button>
+                            </div>
+                        </td>
+                    </tr>
+                </aura:iteration>
+
+                </tbody>
+            </table>
+        </div>
+        <div class="slds-col">
+            <aura:if isTrue="{!not(empty(v.selectedOrder))}">
+                <lightning:card title="Complaint details" class="slds-p-around--small">
+                    <table class="slds-table slds-table--bordered">
+                        <thead>
+                        <th scope="col"><span class="slds-truncate">Subject</span></th>
+                        <th scope="col"><span class="slds-truncate">Description</span></th>
+                        </thead>
+                        <td>
+                                {!v.selectedOrder.Subject}
+                        </td>
+                        <td>
+                                {!v.selectedOrder.Description}
+                        </td>
+                    </table>
+                </lightning:card>
+            </aura:if>
+        </div>
+    </div>
+</aura:component>

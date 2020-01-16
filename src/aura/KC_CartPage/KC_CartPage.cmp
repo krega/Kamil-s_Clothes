@@ -11,6 +11,7 @@
     <aura:attribute type="String" name="billingState"/>
     <aura:attribute type="String" name="billingCountry"/>
     <aura:attribute type="String" name="billingCity"/>
+    <aura:attribute type="User" name="UserInfo"/>
     <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
     <aura:handler event="c:KC_AddItemToCart" action="{!c.doInit}"/>
     <aura:registerEvent name="sendAddToCart" type="c:KC_AddItemToCart"/>
@@ -20,7 +21,7 @@
             <div class="slds-size_1-of-2 slds-container_center">
                 <h1 class="slds-text-heading_medium slds-text-align--center">There are not items in cart</h1>
                 <lightning:button variant="brand" class="slds-align_absolute-center" label="Back to homepage"
-                                  title="Back to homepage" onclick="{!c.redirectToHome}"/>
+                                  onclick="{!c.redirectToHome}">>{!$Label.c.KC_BackToHome}</lightning:button>
             </div>
         </aura:if>
         <aura:iteration items="{!v.records}" var="item" indexVar="index">
@@ -58,9 +59,9 @@
                             <table class="slds-table slds-table--bordered">
                                 <thead>
                                 <tr>
-                                    <th scope="col"><span class="slds-truncate">Name</span></th>
-                                    <th scope="col"><span class="slds-truncate">Quantity</span></th>
-                                    <th scope="col"><span class="slds-truncate">Unit Price</span></th>
+                                    <th scope="col"><span class="slds-truncate">{!$Label.c.KC_ItemName}</span></th>
+                                    <th scope="col"><span class="slds-truncate">{!$Label.c.KC_Quantity}</span></th>
+                                    <th scope="col"><span class="slds-truncate">{!$Label.c.KC_UnitPrice}</span></th>
                                 </tr>
                                 </thead>
                                 <tbody>
