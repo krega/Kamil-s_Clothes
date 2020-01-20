@@ -23,5 +23,5 @@
         helper.postAnOrder(component);
         let makeAnOrderEvent = $A.get("e.c:KC_AddItemToCart");
         makeAnOrderEvent.fire();
-    }
+    },
 })

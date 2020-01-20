@@ -2,9 +2,6 @@
                 controller="KC_CartController">
     <aura:attribute type="Object[]" name="records"/>
     <aura:attribute type="String" name="totalPrice"/>
-    <aura:attribute type="String" name="toasterMessage"/>
-    <aura:attribute type="String" name="toasterType"/>
-    <aura:attribute type="String" name="toasterTitle"/>
     <aura:attribute type="Boolean" name="orderModal" default="false"/>
     <aura:attribute type="String" name="billingStreet"/>
     <aura:attribute type="String" name="billingPostalCode"/>
@@ -86,11 +83,7 @@
                 </section>
                 <div class="slds-backdrop slds-backdrop_open"></div>
             </aura:if>
-
         </aura:if>
     </lightning:card>
-    <aura:if isTrue="{!not(empty(v.toasterMessage))}">
-        <c:KC_Toaster toasterType="{!v.toasterType}" toasterMessage="{!v.toasterMessage}"
-                      toasterTitle="{!v.toasterTitle}"/>
-    </aura:if>
+    <c:KC_InfoToaster aura:id="toastCmp" />
 </aura:component>

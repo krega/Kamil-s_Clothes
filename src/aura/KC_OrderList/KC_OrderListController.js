@@ -28,5 +28,5 @@
             "isredirect": false
         });
         urlEvent.fire();
-    }
+    },
 });

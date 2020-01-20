@@ -26,7 +26,6 @@ public with sharing class KC_CartController {
         ];
         return prices;
     }
-
     public static User getUserInfo(){
 
         return KC_Utils.getCurrentUser();
@@ -36,7 +35,6 @@ public with sharing class KC_CartController {
     public static User getBillingInfo(){
         return KC_Utils.getUserBillingAddress();
     }
-
 
     @AuraEnabled
     public static void postAnOrder(String newOrderPram){

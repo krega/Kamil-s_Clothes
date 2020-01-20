@@ -1,4 +1,5 @@
 public with sharing class KC_OrdersController {
+
     @AuraEnabled
     public static List<OrderWrapper> getUserOrders() {
         User currentUser = KC_Utils.getCurrentUser();

@@ -68,8 +68,6 @@
                            Do you have a problem?
                             <a href="" onclick="{!c.showSupportForm}">Contact Us</a>
                         </p>
-
-
                     </lightning:layout>
 
                     <aura:if isTrue="{!v.showSupportForm}">
