@@ -28,6 +28,5 @@
             "isredirect": false
         });
         urlEvent.fire();
-
     }
 });

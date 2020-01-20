@@ -8,5 +8,5 @@
         helper.createCase(component);
         helper.cancelCase(component);
 
-    }
+    },
 })

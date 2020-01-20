@@ -28,6 +28,7 @@
                     </th>
                 </tr>
                 </thead>
+
                 <tbody>
                 <aura:iteration items="{!v.userCases}" var="userCase" indexVar="index">
 

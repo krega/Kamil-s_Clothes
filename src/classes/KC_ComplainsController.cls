@@ -16,6 +16,7 @@ public with sharing class KC_ComplainsController {
     public static List<Case> getUserCases(){
         return KC_ComplainsController.getUserCases1();
     }
+
     public static List<Case> getUserCases1(){
         String userId = UserInfo.getUserId();
         List<Case> casesList = [SELECT Id, Subject, Description, CaseNumber, Order__r.OrderNumber, Status FROM Case WHERE CreatedById = :userId ORDER BY CaseNumber DESC];

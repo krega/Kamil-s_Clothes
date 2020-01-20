@@ -9,5 +9,5 @@
         let allOrders = component.get("v.userCases");
       component.set("v.selectedOrder", allOrders[index]);
       console.log(component.get("v.selectedOrder"));
-    }
+    },
 })

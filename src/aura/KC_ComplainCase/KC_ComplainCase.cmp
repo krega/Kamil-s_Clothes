@@ -16,6 +16,7 @@
                 <lightning:textarea class="caseBody" name="myTextArea" value="{!v.caseDescription}"
                                     label="" variant="label-hidden" maxlength="1000"/>
             </div>
+
             <lightning:layout horizontalAlign="center">
                 <lightning:button onclick="{!c.cancelCase}" class="slds-button_text-destructive">Cancel
                 </lightning:button>
