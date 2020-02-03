@@ -1,15 +1,15 @@
 <aura:component description="KC_OrderList" implements="forceCommunity:availableForAllPageTypes" access="global" controller="KC_OrdersController">
         <aura:attribute name="allOrders" type="Object[]"/>
         <aura:attribute name="selectedOrder" type="Object"/>
-         <aura:attribute type="Boolean" name="showSupportForm"/>
+         <aura:attribute name="showSupportForm"  type="Boolean"/>
         <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
 
     <aura:if isTrue="{!empty(v.allOrders)}">
         <lightning:card>
         <div class="slds-size_1-of-2 slds-container_center">
-            <h1 class="slds-text-heading_medium slds-text-align--center">There are not items in cart</h1>
-            <lightning:button variant="brand" class="slds-align_absolute-center" label="Back to homepage"
-                              title="Back to homepage" onclick="{!c.redirectToHome}"/>
+            <h1 class="slds-text-heading_medium slds-text-align--center">{!$Label.c.KC_ThereAreNoOrder}</h1>
+            <lightning:button variant="brand" class="slds-align_absolute-center" label="{!$Label.c.KC_BackToHome}"
+                              title="{!$Label.c.KC_BackToHomepage}" onclick="{!c.redirectToHome}"/>
             </div>
         </lightning:card>
     </aura:if>
@@ -20,19 +20,19 @@
                     <table class="slds-table slds-table--bordered">
                         <thead>
                         <tr>
-                            <th scope="col"><span class="slds-truncate">Number</span></th>
-                            <th scope="col"><span class="slds-truncate">Order Amount</span></th>
-                            <th scope="col"><span class="slds-truncate">Status</span></th>
+                            <th scope="col"><span class="slds-truncate">{!$Label.c.KC_OrderNumber}</span></th>
+                            <th scope="col"><span class="slds-truncate">{!$Label.c.KC_OrderAmount}</span></th>
+                            <th scope="col"><span class="slds-truncate">{!$Label.c.KC_Status}</span></th>
                         </tr>
                         </thead>
                         <tbody>
                         <aura:iteration items="{!v.allOrders}" var="order" indexVar="index">
                             <tr onclick="{!c.showDetails}" data-index="{!index}">
-                                <td>{!order.order.OrderNumber}</td>
+                                <td>{!order.orderedUnit.OrderNumber}</td>
                                 <td>
-                                    <lightning:formattedNumber value="{!order.order.TotalAmount}" style="currency"/>
+                                    <lightning:formattedNumber value="{!order.orderedUnit.TotalAmount}" style="currency"/>
                                 </td>
-                                <td>{!order.order.Status}</td>
+                                <td>{!order.orderedUnit.Status}</td>
                             </tr>
                         </aura:iteration>
                         </tbody>
@@ -64,18 +64,15 @@
                         </table>
                     </lightning:card>
                     <lightning:layout horizontalAlign="center" class="slds-m-bottom--large">
-                        <p>
-                           Do you have a problem?
-                            <a href="" onclick="{!c.showSupportForm}">Contact Us</a>
+                        <p>{!$Label.c.KC_DoYouHaveAProblem}
+
+                            <a href="" onclick="{!c.showSupportForm}"> {!$Label.c.KC_ContactUs}</a>
                         </p>
-
-
                     </lightning:layout>
-
                     <aura:if isTrue="{!v.showSupportForm}">
                         <hr class="slds-m-top--large slds-m-bottom--large"/>
                         <lightning:layout horizontalAlign="spread">
-                            <c:KC_ComplainCase orderId="{!v.selectedOrder.order.Id}" showForm="{!v.showSupportForm}"/>
+                            <c:KC_ComplainCase orderId="{!v.selectedOrder.orderedUnit.Id}" showForm="{!v.showSupportForm}"/>
                         </lightning:layout>
                     </aura:if>
                 </aura:if>
@@ -83,4 +80,5 @@
         </div>
 
     </aura:if>
+    <c:KC_InfoToaster aura:id="toastCmp" />
     </aura:component>

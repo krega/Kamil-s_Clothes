@@ -1,5 +1,5 @@
 ({
-    getAllOrders : function (component, item, callback) {
+    getAllOrders : function (component) {
         let action = component.get("c.getUserOrders");
         action.setCallback(this, function (response) {
            let state = response.getState();
@@ -12,5 +12,5 @@
     },
      showSupportForm: function (component) {
             component.set('v.showSupportForm', true)
-        }
+     }
 });

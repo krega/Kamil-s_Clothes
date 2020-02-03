@@ -6,11 +6,13 @@
         action.setCallback(this, function (response) {
             let state = response.getState();
             if (state === 'SUCCESS'){
-                console.log(response.getReturnValue())
+
                 component.set("v.results",response.getReturnValue());
-                console.log(component.get("v.results"));
+
             }
         });
         $A.enqueueAction(action);
-    }
+    },
+
+
 });

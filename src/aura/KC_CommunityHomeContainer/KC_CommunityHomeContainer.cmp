@@ -9,9 +9,9 @@
         <aura:attribute name="smallLogo" type="Boolean" default="false" />
         <div class="slds-container--fluid cHeader">
             <div class="slds-grid slds-is-relative slds-container--fluid slds-grid--vertical-align-center cHeaderTop">
-                <div class="logoRegion slds-col">
+             <!--   <div class="logoRegion slds-col">
 
-                </div>
+                </div>-->
                 <div class="navigation slds-col slds-size--1-of-4">
                         {!v.navBar}
                 </div>
@@ -21,12 +21,12 @@
                <div class="slds-p-horizontal_small ">
                     <c:KC_Cart/>
                 </div>
-                <div class="notificationsRegion slds-p-left_medium">
+           <!--     <div class="notificationsRegion slds-p-left_medium">
                     <forceCommunity:notifications/>
                 </div>
                 <div class="profileMenuRegion cProfileMenu slds-p-horizontal_large">
                         {!v.profileMenu}
-                </div>
+                </div>-->
 
             </div>
         </div>

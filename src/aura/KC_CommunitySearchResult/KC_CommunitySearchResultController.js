@@ -1,6 +1,7 @@
 ({
      doInit : function (component, event,helper) {
             console.log(component.get("v.item.Name"));
+            helper.getOldPrice(component);
         },
     redirectToDetailPage : function (component, event, helper) {
         console.log(component.get('v.items'))
@@ -11,5 +12,6 @@
             "isredirect":false
         });
         urlEvent.fire();
-    }
-});
+    },
+
+   });

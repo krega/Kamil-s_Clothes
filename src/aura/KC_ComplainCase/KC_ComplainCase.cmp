@@ -1,29 +1,28 @@
 <aura:component description="KC_ComplainCase" controller="KC_ComplainsController">
-    <aura:attribute type="Boolean" name="showForm"/>
-    <aura:attribute type="String" name="orderId"/>
-    <aura:attribute type="String" name="caseSubject"/>
-    <aura:attribute type="String" name="caseDescription"/>
+    <aura:attribute name="showForm" type="Boolean" />
+    <aura:attribute name="orderId" type="String" />
+    <aura:attribute name="caseSubject" type="String"/>
+    <aura:attribute name="caseDescription" type="String" />
 
     <lightning:card  class="slds-p-around--xx-large">
         <div class="caseContainer">
-
             <div class="slds-m-bottom--medium">
-                <p class="slds-text-heading_small slds-m-bottom--small">Case subject</p>
-                <lightning:input label="" variant="label-hidden" type="text" value="{!v.caseSubject}"/>
+                <p class="slds-text-heading_small slds-m-bottom--small">{!$Label.c.KC_CaseSubject}</p>
+                <lightning:input  variant="label-hidden" type="text" value="{!v.caseSubject}"/>
             </div>
             <div>
-                <p class="slds-text-heading_small slds-m-bottom--small">Describe problem</p>
-                <lightning:textarea class="caseBody" name="myTextArea" value="{!v.caseDescription}"
-                                    label="" variant="label-hidden" maxlength="1000"/>
+                <p class="slds-text-heading_small slds-m-bottom--small">{!$Label.c.KC_DescribeProblem}</p>
+                <lightning:textarea class="caseBody" value="{!v.caseDescription}"
+                                     variant="label-hidden" maxlength="1000"/>
             </div>
 
             <lightning:layout horizontalAlign="center">
-                <lightning:button onclick="{!c.cancelCase}" class="slds-button_text-destructive">Cancel
+                <lightning:button onclick="{!c.cancelCase}" class="slds-button_text-destructive">{!$Label.c.KC_Close}
                 </lightning:button>
-                <lightning:button onclick="{!c.createCase}">Send</lightning:button>
+                <lightning:button onclick="{!c.createCase}">{!$Label.c.KC_Send}</lightning:button>
             </lightning:layout>
 
         </div>
     </lightning:card>
-
+    <c:KC_InfoToaster aura:id="toastCmp" />
 </aura:component>

@@ -1,0 +1,7 @@
+<!--
+ - Created by BRITENET on 27.01.2020.
+ -->
+
+<aura:event type="APPLICATION" description="KC_RefreshFavouriteList">
+    <aura:attribute type="String" name="asd"/>
+</aura:event>

@@ -17,16 +17,38 @@ public with sharing class KC_CartController {
         }
     }
     @AuraEnabled
-    public static List<PricebookEntry> getProductsWithPrices(String[] productIds) {
-        List<PricebookEntry> prices = [
-                SELECT Name,Product2Id,UnitPrice,Product2.Name,Product2.PhotoId__c, Product2.Family,Product2.Size__c
+    public static List<PriceBookEntry> getNormalPrice(String query) {
+        List<PricebookEntry> productList = [
+                SELECT Id,Name,Product2Id,UnitPrice
                 FROM PricebookEntry
-                WHERE Product2Id IN :productIds AND IsActive = true
+                WHERE Product2Id = :query AND IsActive = true AND Pricebook2.IsStandard = true
+                ORDER BY UnitPrice DESC
+
+        ];
+        System.debug(productList);
+        return productList;
+    }
+    @AuraEnabled
+    public static List<PricebookEntry> getProductsWithPrices(String[] productIds) {
+        Set<Id> activePricebooks = KC_CommunitySearchController.getActiveDiscounts();
+        List<PricebookEntry> products = [
+                SELECT Name,Product2Id,UnitPrice,Product2.Name,Product2.PhotoId__c,Product2.Family,Product2.Size__c
+                FROM PricebookEntry
+                WHERE Product2Id IN :productIds AND IsActive = true AND Pricebook2Id IN :activePricebooks
                 ORDER BY UnitPrice DESC
         ];
-        return prices;
+        Map<Id, Decimal> minimalPrices = KC_CommunitySearchController.getMinimalPriceOfProducts(products);
+        Map<Id, PricebookEntry> uniqueProducts = new Map<Id, PricebookEntry>();
+        for (PricebookEntry result : products) {
+            if (!uniqueProducts.containsKey(result.Product2Id)) {
+                uniqueProducts.put(result.Product2Id, result);
+            }
+        }
+        for (PricebookEntry uniqueProduct : uniqueProducts.values()) {
+            uniqueProduct.UnitPrice = minimalPrices.get(uniqueProduct.Product2Id);
+        }
+        return uniqueProducts.values();
     }
-
     public static User getUserInfo(){
 
         return KC_Utils.getCurrentUser();

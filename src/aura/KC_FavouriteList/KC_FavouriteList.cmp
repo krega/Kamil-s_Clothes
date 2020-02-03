@@ -1,0 +1,29 @@
+<!--
+ - Created by BRITENET on 24.01.2020.
+ -->
+
+<aura:component description="KC_FavouriteList"  implements="forceCommunity:availableForAllPageTypes" access="global" controller="KC_FavouritesListController">
+    <aura:attribute type="Object[]" name="normalPrice"/>
+    <aura:attribute  type="Object" name="record"/>
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <aura:registerEvent type="c:KC_AddItemToCart" name="sendAddToCart" />
+  <aura:handler  event="c:KC_RefreshFavouriteList" action="{!c.doInit}"/>
+
+    <lightning:card>
+       <aura:if isTrue="{!empty(v.record)}">
+            <div class="slds-size_1-of-2 slds-container_center">
+                <h1 class="slds-text-heading_medium slds-text-align&#45;&#45;center">{!$Label.c.KC_RedirectToHome}</h1>
+                <lightning:button variant="brand" class="slds-align_absolute-center"
+                                  onclick="{!c.redirectToHome}">{!$Label.c.KC_BackToHome}</lightning:button>
+            </div>
+        </aura:if>
+        <aura:iteration items="{!v.record}" var="item" indexVar="index">
+            <div class="slds-col" data-index="{!index.item}">
+                <c:KC_FavouriteItem record="{!item}"/>
+            </div>
+        </aura:iteration>
+
+    </lightning:card>
+    <c:KC_InfoToaster aura:id="toastCmp" />
+
+</aura:component>

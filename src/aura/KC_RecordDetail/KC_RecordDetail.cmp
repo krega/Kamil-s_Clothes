@@ -1,16 +1,15 @@
 <aura:component description="KC_RecordDetail" implements="forceCommunity:availableForAllPageTypes,force:hasRecordId"
                 access="global" controller="KC_ProductController">
     <aura:attribute type="String" name="recordId"/>
+    <aura:attribute type="Object" name="oldPrice" />
     <aura:attribute name="product" type="PricebookEntry"/>
     <aura:attribute name="fields" type="String[]"
                     default="['Name','Description','Family','ProductCode','Size__c','Producent__c']"/>
     <aura:attribute type="String" name="featurePhoto"/>
     <aura:attribute type="String" name="price"/>
-    <aura:attribute type="String" name="toasterMessage"/>
-    <aura:attribute type="String" name="toasterType"/>
-    <aura:attribute type="String" name="toasterTitle"/>
     <aura:attribute name="photos" type="List"/>
     <aura:attribute name="photoPath" type="String"/>
+    <aura:attribute name="isFavorite" type="Boolean" default="false"/>
 
     <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
 
@@ -34,16 +33,25 @@
                             objectApiName="Product2"
                             fields="{!v.fields}"
                             mode="readonly" class=""/>
-                    <h1 class="slds-text-heading_medium slds-m-vertical--medium">
-                        <lightning:formattedNumber value="{!v.price}" style="currency"/>
-                    </h1>
+                    <aura:if isTrue="{!v.price ==v.oldPrice[0].UnitPrice }">
+                        <h1 class="slds-text-heading_medium slds-m-vertical--medium">
+                            <lightning:formattedNumber value="{!v.price}" style="currency"/>
+                        </h1>
+                        <aura:set attribute="else">
+                            <p class="slds-text-heading_medium "> <span class="strikethrough">Old
+                                <lightning:formattedNumber value="{!v.oldPrice[0].UnitPrice}" style="currency"/></span>
+                            </p>
+                            <h1 class="slds-text-heading_medium slds-m-vertical--medium">New Price
+                                <lightning:formattedNumber value="{!v.price}" style="currency"/>
+                            </h1>
+                        </aura:set>
+                    </aura:if>
+                    <lightning:button iconName="utility:favorite" label="Add to Favourite List" class="typicalbtn" onclick="{!c.addToFavorites}" disabled="{!v.isFavorite}"/>
+
                     <lightning:button variant="brand" label="Add to card" title="Add to card" onclick="{!c.addToCart}"/>
                 </div>
             </div>
         </lightning:card>
     </div>
-    <aura:if isTrue="{!not(empty(v.toasterMessage))}">
-        <c:KC_Toaster toasterType="{!v.toasterType}" toasterMessage="{!v.toasterMessage}"
-                      toasterTitle="{!v.toasterTitle}"/>
-    </aura:if>
+    <c:KC_InfoToaster aura:id="toastCmp" />
 </aura:component>

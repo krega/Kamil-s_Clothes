@@ -1,0 +1,10 @@
+
+.THIS img {
+    border: 2px solid #6B6D70;
+    width : 10rem;
+    height : 10rem;
+}
+
+.THIS .slds-col{
+    padding : 10px;
+}

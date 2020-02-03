@@ -1,8 +1,5 @@
 <aura:component description="KC_CartController" controller="KC_CartController">
     <aura:attribute  type="Integer" name="productCount"/>
-    <aura:attribute type="String" name="toasterMessage"/>
-    <aura:attribute type="String" name="toasterType"/>
-    <aura:attribute type="String" name="toasterTitle"/>
     <aura:attribute type="Object[]" name="records"/>
     <aura:attribute type="String" name="totalPrice"/>
     <aura:registerEvent name="sendAddToCart" type="c:KC_AddItemToCart"/>
@@ -35,8 +32,5 @@
         </section>
         </div>
     </div>
-    <aura:if isTrue="{!not(empty(v.toasterMessage))}">
-        <c:KC_Toaster toasterType="{!v.toasterType}" toasterMessage="{!v.toasterMessage}"
-                      toasterTitle="{!v.toasterTitle}"/>
-    </aura:if>
+    <c:KC_InfoToaster aura:id="toastCmp" />
 </aura:component>

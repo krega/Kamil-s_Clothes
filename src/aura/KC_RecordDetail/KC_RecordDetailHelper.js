@@ -1,10 +1,12 @@
 ({
-    prepareProductView: function(component, event, helper) {
+    getView: function(component, event, helper) {
+
         let productId = component.get("v.recordId");
         let action = component.get("c.getProductInfo");
         action.setParams({
             id: productId
         });
+
         action.setCallback(this, function(response) {
             var state = response.getState();
             if (state === "SUCCESS") {
@@ -15,15 +17,26 @@
                 let productId = component.get("v.product").Product2.Id;
                 let photo__c = component.get("v.product.Product2.PhotoId__c")
                 component.set("v.photoPath", photo__c);
-                this.getPhotos(component, event, helper, productId);
-            } else if (state === "ERROR") {
-                console.log(response.getError());
+                this.getAllPhotos(component,  productId);
+
+
+                             this.getFavorites(component, productId);
+            } else if (state === 'ERROR') {
+                let errors = response.getError();
+                title = $A.get("$Label.c.KC_Error");
+                if (errors && Array.isArray(errors) && errors.length > 0) {
+                    message = errors[0].message;
+                    component.find("toastCmp").toast(title, "error", message);
+                }
+            } else {
+                message = $A.get("$Label.c.KC_UnknownError");
+                component.find("toastCmp").toast(title, "error", message);
             }
         });
         $A.enqueueAction(action);
     },
 
-    getPhotos: function(component, event, helper, productId) {
+    getAllPhotos: function(component, productId) {
         let action = component.get("c.productPhotos");
         action.setParams({
             id: productId
@@ -32,11 +45,21 @@
             var state = response.getState();
             if (state === "SUCCESS") {
                 component.set("v.photos", response.getReturnValue());
+            } else if (state === 'ERROR') {
+                let errors = response.getError();
+                title = $A.get("$Label.c.KC_Error");
+                if (errors && Array.isArray(errors) && errors.length > 0) {
+                    message = errors[0].message;
+                    component.find("toastCmp").toast(title, "error", message);
+                }
+            } else {
+                message = $A.get("$Label.c.KC_UnknownError");
+                component.find("toastCmp").toast(title, "error", message);
             }
         });
         $A.enqueueAction(action);
     },
-    getPhoto: function(component, event, helper) {
+    getPhoto: function(component, event) {
         let photoIndex = event.currentTarget.dataset.id;
         let photos = component.get("v.photos");
         let selectedPhoto = photos[photoIndex];
@@ -53,15 +76,14 @@
                 component.set("v.price", response.getReturnValue())
             } else if (state === 'ERROR') {
                 let errors = response.getError();
+                title = $A.get("$Label.c.KC_Error");
                 if (errors && Array.isArray(errors) && errors.length > 0) {
-                    component.set('v.toasterType', 'error');
-                    component.set('v.toasterTitle', 'Error');
-                    component.set('v.toasterMessage', errors[0].message);
+                    message = errors[0].message;
+                    component.find("toastCmp").toast(title, "error", message);
                 }
             } else {
-                component.set('v.toasterType', 'info');
-                component.set('v.toasterTitle', state);
-                component.set('v.toasterMessage', response.getReturnValue());
+                message = $A.get("$Label.c.KC_UnknownError");
+                component.find("toastCmp").toast(title, "error", message);
             }
         });
         $A.enqueueAction(action);
@@ -102,15 +124,14 @@
                     let state = response.getState();
                     if (state === 'SUCCESS') {} else if (state === 'ERROR') {
                         let errors = response.getError();
+                        title = $A.get("$Label.c.KC_Error");
                         if (errors && Array.isArray(errors) && errors.length > 0) {
-                            component.set('v.toasterType', 'error');
-                            component.set('v.toasterTitle', 'Error');
-                            component.set('v.toasterMessage', errors[0].message);
+                            message = errors[0].message;
+                            component.find("toastCmp").toast(title, "error", message);
                         }
                     } else {
-                        component.set('v.toasterType', 'info');
-                        component.set('v.toasterTitle', state);
-                        component.set('v.toasterMessage', response.getReturnValue());
+                        message = $A.get("$Label.c.KC_UnknownError");
+                        component.find("toastCmp").toast(title, "error", message);
                     }
                 });
                 $A.enqueueAction(setItemAction);
@@ -118,18 +139,113 @@
                 addItemEvent.fire();
             } else if (state === 'ERROR') {
                 let errors = response.getError();
+                title = $A.get("$Label.c.KC_Error");
                 if (errors && Array.isArray(errors) && errors.length > 0) {
-                    component.set('v.toasterType', 'error');
-                    component.set('v.toasterTitle', 'Error');
-                    component.set('v.toasterMessage', errors[0].message);
+                    message = errors[0].message;
+                    component.find("toastCmp").toast(title, "error", message);
                 }
             } else {
-                component.set('v.toasterType', 'info');
-                component.set('v.toasterTitle', state);
-                component.set('v.toasterMessage', response.getReturnValue());
+                message = $A.get("$Label.c.KC_UnknownError");
+                component.find("toastCmp").toast(title, "error", message);
             }
         });
         $A.enqueueAction(action);
     },
+ getOldPrice : function (component, item, callback) {
+             let sURLVariables = window.location.pathname.split('/');
+            let action = component.get("c.getNormalPrice");
+            let name = component.get("v.recordId")
+            action.setParams({query:name});
+            action.setCallback(this, function (response) {
+                let state = response.getState();
+                if (state === 'SUCCESS'){
+                    console.log(response.getReturnValue())
+                    component.set("v.oldPrice",response.getReturnValue());
 
+                }
+            });
+            $A.enqueueAction(action);
+        },
+
+
+         favorites: function(component){
+                let product = component.get("v.product");
+                let productId = product.Product2.Id;
+                let productPrice =  component.get("v.oldPrice[0].UnitPrice");
+                  let entry = product.Id;
+                let action = component.get("c.addToFavouritesList");
+                action.setParams({
+                    id : productId,
+                    price : productPrice,
+                });
+                action.setCallback(this, function(response){
+                    let state = response.getState();
+                    if (state === "SUCCESS"){
+                         let operationResult = response.getReturnValue();
+                        this.getFavorites(component, productId);
+                    }
+                    else if (state === "ERROR"){
+                        let errors = response.getError();
+                        let message,
+                             title ='error'
+                        if (errors) {
+                             if (errors[0] && errors[0].message){
+                                   message = errors[0].message;
+                                   component.find("toastCmp").toast(title, "error", message);
+                             }
+                        }
+                        else {
+                             message = 'unknown'
+                             component.find("toastCmp").toast(title, "error", message);
+                        }
+                    }
+                });
+                $A.enqueueAction(action);
+            },
+
+   getFavorites: function(component, productId){
+        let action = component.get("c.checkFavouriteProduct");
+        action.setParams({
+             id : productId
+        });
+        action.setCallback(this, function(response){
+        let state = response.getState();
+        if (state === "SUCCESS"){
+            let favorites = response.getReturnValue();
+           if(favorites != null){
+                           this.checkIsInFavourites(component, favorites);
+                       }
+        }
+        else if (state === "ERROR"){
+              let errors = response.getError();
+              let message,
+                   title = 'error';
+              if (errors){
+                    if (errors[0] && errors[0].message){
+                          message = errors[0].message;
+                          component.find("toastCmp").toast(title, "error", message);
+                    }
+              }
+              else{
+                     message ='unknown';
+                     component.find("toastCmp").toast(title, "error", message);
+              }
+        }
+        });
+        $A.enqueueAction(action);
+    },
+        checkIsInFavourites: function(component, favorites){
+            let recordID = component.get("v.recordId");
+                 console.log(recordID);
+            for(let i = 0; i < favorites.length; i++){
+                  console.log('favorites' + favorites[i].Product__c);
+                if(favorites[i].Product__c===recordID){
+                    component.set("v.isFavorite", true);
+                    break;
+                }
+                else{
+                    component.set("v.isFavorite", false);
+                }
+            }
+        },
 })

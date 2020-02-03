@@ -1,0 +1,53 @@
+.THIS {
+    font-size: 16px;
+}
+
+.THIS h2{
+    font-size: 24px;
+}
+
+.THIS .mylabel{
+    margin-top: 20px;
+    margin-bottom: 20px;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.THIS .myformfragment{
+    margin-top: 20px;
+    margin-bottom: 20px;
+    padding-left: 30px;
+    font-size: 16px !important;
+}
+
+.THIS .slds-checkbox .slds-checkbox__label .slds-form-element__label{
+    font-size: 16px !important;
+}
+
+.THIS .slds-slider-label__range {
+    font-size: 16px !important;
+}
+
+.THIS .slds-form-element__label{
+    font-size: 16px !important;
+}
+
+.THIS .slds-input{
+    margin-bottom: 20px;
+}
+
+.THIS .slds-checkbox_faux{
+    height: 25px;
+    width: 25px;
+    background-color: #eee;
+}
+
+.THIS .slds-checkbox {
+    margin-bottom: 10px;
+}
+
+.THIS .slds-button_neutral{
+    font-size: 16px;
+    width: 150px;
+    height: 50px;
+}

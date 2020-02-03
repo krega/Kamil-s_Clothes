@@ -1,0 +1,68 @@
+<aura:component description="KC_AddProduct" implements="force:appHostable,flexipage:availableForAllPageTypes"
+                controller="KC_AddProductController">
+    <aura:attribute name="productName" type="String"/>
+    <aura:attribute name="producerName" type="String"/>
+    <aura:attribute name="productCode" type="String"/>
+    <aura:attribute name="standardPrice" type="Double"/>
+    <aura:attribute name="sizeOptions" type="List"/>
+    <aura:attribute name="familyOptions" type="List"/>
+    <aura:attribute name="colorOptions" type="List"/>
+    <aura:attribute name="selectedSizes" type="String"/>
+    <aura:attribute name="selectedFamily" type="String"/>
+    <aura:attribute name="fileIds" type="List"/>
+    <aura:attribute name="description" type="String"/>
+    <aura:attribute name="userId" type="String"/>
+
+    <aura:handler name="init" value="{!this}" action="{!c.onInit}"/>
+
+    <div class="slds-modal__container">
+        <header class="slds-modal__header">
+            <h2>{!$Label.c.KC_NewItem}</h2>
+        </header>
+        <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+            <lightning:input name="productName" label="{!$Label.c.KC_NameOfItem}" value="{!v.productName}"/>
+            <lightning:input name="producerName" label="{!$Label.c.KC_Producer}" value="{!v.producerName}"/>
+            <lightning:input name="productCode" label="{!$Label.c.KC_ProductCode}" value="{!v.productCode}"/>
+            <lightning:input name="price" label="{!$Label.c.KC_UnitPrice}" value="{!v.standardPrice}"/>
+            <div class="slds-grid slds-gutters productvariantform">
+                <div class="slds-col">
+                    <span class="mylabel">{!$Label.c.KC_SizeOfItem}</span>
+                    <div class="formfragment">
+                        <aura:iteration items="{!v.sizeOptions}" var="size" indexVar="index">
+
+                            <lightning:input name="sizes" type="checkbox" aura:id="boxPackSize" class="checkboxline"
+                                             value="{!size}"
+                                             label="{!size}"
+                                             onchange="{!c.handleSizeChange}" />
+                        </aura:iteration>
+                    </div>
+                </div>
+                <div class="slds-col">
+                    <span class="mylabel">{!$Label.c.KC_FamilyOfItem}</span>
+                    <div class="formfragment">
+                        <aura:iteration items="{!v.familyOptions}" var="family">
+                            <lightning:input name="family" type="checkbox" aura:id="boxPackFamily" class="checkboxline"
+                                             value="{!family}"
+                                             label="{!family}"
+                                             onchange="{!c.handleFamilyChange}"/>
+                        </aura:iteration>
+                    </div>
+                </div>
+
+            </div>
+            <lightning:textarea name="description" label="{!$Label.c.KC_Description}" value="{!v.description}"/>
+            <lightning:fileUpload label="Upload"
+                                  name="fileUploader"
+                                  multiple="true"
+                                  accept=".jpeg, .jpg, .png"
+                                  recordId="{!v.userId}"
+                                  onuploadfinished="{!c.handleUpload}"/>
+        </div>
+        <footer class="slds-modal__footer">
+            <lightning:button label="Save" onclick="{!c.onSaveProduct}"/>
+        </footer>
+    </div>
+
+    <c:KC_InfoToaster aura:id="toastCmp"/>
+
+</aura:component>

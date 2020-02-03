@@ -63,7 +63,6 @@
                                  component.set("v.resultList", resultList);
                                  }
                               }
-
                       if(event.getParam("accountID") != null){
                           component.set("v.divisionId", event.getParam("accountID"));
                           let selected = component.get("v.selectedRecord");
@@ -71,8 +70,6 @@
                           detail.push(selected);
                           component.set("v.mapPointers", detail);
                           }
-
-
              },
              showToastSuccess: function( component, event, helper ){
                    let toastEvent = $A.get("e.force:showToast");

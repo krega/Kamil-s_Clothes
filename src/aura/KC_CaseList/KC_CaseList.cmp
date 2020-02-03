@@ -4,10 +4,11 @@
     <aura:attribute type="Boolean" name="showCaseDetails"/>
     <aura:attribute type="Object[]" name="userCases"/>
     <aura:attribute type="Object" name="selectedOrder"/>
+    <aura:attribute type="Object" name="commentCase"/>
     <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
 
     <lightning:layout horizontalAlign="center" class="slds-m-bottom--xx-large slds-m-top--xx-large">
-        <h1 class="slds-text-heading--large">Your Complaints</h1>
+        <h1 class="slds-text-heading--large">{!$Label.c.KC_YourComplains}</h1>
     </lightning:layout>
     <div class="slds-grid slds-gutters">
         <div class="slds-col">
@@ -15,20 +16,19 @@
                 <thead>
                 <tr class="slds-line-height_reset">
                     <th class="" scope="col">
-                        <div class="slds-truncate" title="Opportunity Name">Number</div>
+                        <div class="slds-truncate">{!$Label.c.KC_CaseNumber}</div>
                     </th>
                     <th class="" scope="col">
-                        <div class="slds-truncate" title="Opportunity Name">Order Number</div>
+                        <div class="slds-truncate">{!$Label.c.KC_OrderNumber}</div>
                     </th>
                     <th class="" scope="col">
-                        <div class="slds-truncate" title="Opportunity Name">Status</div>
+                        <div class="slds-truncate">{!$Label.c.KC_Status}</div>
                     </th>
                     <th class="" scope="col">
-                        <div class="slds-truncate" title="Opportunity Name">Action</div>
+                        <div class="slds-truncate">{!$Label.c.KC_Details}</div>
                     </th>
                 </tr>
                 </thead>
-
                 <tbody>
                 <aura:iteration items="{!v.userCases}" var="userCase" indexVar="index">
 
@@ -56,17 +56,33 @@
         <div class="slds-col">
             <aura:if isTrue="{!not(empty(v.selectedOrder))}">
                 <lightning:card title="Complaint details" class="slds-p-around--small">
-                    <table class="slds-table slds-table--bordered">
+                    <table class="slds-table slds-table_cell-buffer slds-table_bordered">
                         <thead>
-                        <th scope="col"><span class="slds-truncate">Subject</span></th>
-                        <th scope="col"><span class="slds-truncate">Description</span></th>
+                        <tr class="slds-line-height_reset">
+                            <th class="" scope="col">
+                                <div class="slds-truncate" >{!$Label.c.KC_Subject}</div>
+                            </th>
+                            <th class="" scope="col">
+                                <div class="slds-truncate">{!$Label.c.KC_OrderDescription}</div>
+                            </th>
+                            <th class="" scope="col">
+                                <div class="slds-truncate">{!$Label.c.KC_SpecialistComment}</div>
+                            </th>
+                        </tr>
                         </thead>
-                        <td>
-                                {!v.selectedOrder.Subject}
-                        </td>
-                        <td>
-                                {!v.selectedOrder.Description}
-                        </td>
+                        <tr class="slds-hint-parent">
+                            <td>
+                                <p> {!v.selectedOrder.Subject}</p>
+                            </td>
+                            <td>
+                                <p>  {!v.selectedOrder.Description}</p>
+                            </td>
+                            <td>
+                                <aura:iteration items="{!v.commentCase}" var="comment">
+                                    <p>  {!comment.CommentBody}</p>
+                                </aura:iteration>
+                            </td>
+                        </tr>
                     </table>
                 </lightning:card>
             </aura:if>

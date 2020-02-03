@@ -1,0 +1,57 @@
+<!--
+ - Created by BRITENET on 24.01.2020.
+ -->
+
+<aura:component description="KC_FavouriteItem" controller="KC_FavouritesListController">
+    <aura:attribute  type="Object" name="record"/>
+    <aura:attribute type="Object" name="oldPrice" />
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <aura:registerEvent type="c:KC_AddItemToCart" name="sendAddToCart" />
+    <aura:handler event="force:refreshView" action="{!c.doInit}" />
+    <aura:registerEvent name="RefreshFavouriteList" type="c:KC_RefreshFavouriteList"/>
+
+    <div class="slds-grid slds-container_center slds-size_2-of-3">
+        <div class="slds-col">
+            <div class="slds-grid ">
+                <div class="slds-col slds-size_1-of-5">
+                    <img src="{!v.record.Product2.PhotoId__c}" alt="photo"/>
+                </div>
+                <div class="slds-col slds-grid slds-size_4-of-5">
+                    <div class="slds-col slds-size_1-of-2">
+                        <div class="slds-col slds-size_11-of-12">
+                            <span class="slds-text-heading_small" >{!$Label.c.KC_ItemCategory  + ' '} </span> <span class="slds-text-heading_small">{!v.record.Product2.Family}</span>
+                        </div>
+                        <div class="slds-col slds-size_11-of-12">
+                            <span class="slds-text-heading_small">{!$Label.c.KC_ItemName + ' '} </span>   <span class="slds-text-heading_small">{!v.record.Name}</span>
+                        </div>
+                        <div class="slds-col slds-size_11-of-12">
+                            <span class="slds-text-heading_small">{!$Label.c.KC_ItemSize +' '}  </span> <span class="slds-text-heading_small">{!v.record.Product2.Size__c}</span>
+                        </div>
+                    </div>
+                    <aura:if isTrue="{!v.record.UnitPrice ==v.oldPrice[0].UnitPrice }">
+                        <h1 class="slds-text-heading_medium slds-m-vertical--medium">
+                            <lightning:formattedNumber value="{!v.record.UnitPrice}" style="currency"/>
+                        </h1>
+                        <aura:set attribute="else">
+                            <p class="slds-text-heading_medium "> <span class="strikethrough">Old
+                                <lightning:formattedNumber value="{!v.oldPrice[0].UnitPrice}" style="currency"/></span>
+                            </p>
+                            <h1 class="slds-text-heading_medium slds-m-vertical--medium">New Price
+                                <lightning:formattedNumber value="{!v.record.UnitPrice}" style="currency"/>
+                            </h1>
+                            <h2 class="slds-text-heading_medium slds-m-vertical--medium">
+
+                            </h2>
+                        </aura:set>
+                    </aura:if>
+                </div>
+            </div>
+            <div>
+                <lightning:button iconName="utility:preview" onclick="{!c.redirectToDetailPage}" />
+                <lightning:button iconName="utility:cart" onclick="{!c.addToCart}"/>
+                <lightning:button iconName="utility:delete" onclick="{!c.removeFromFavourite}"/>
+            </div>
+        </div>
+    </div>
+    <c:KC_InfoToaster aura:id="toastCmp" />
+</aura:component>

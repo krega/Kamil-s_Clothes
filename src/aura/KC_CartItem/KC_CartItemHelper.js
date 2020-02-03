@@ -21,29 +21,30 @@
                         addItemEvent.fire();
                     } else if (state === 'ERROR') {
                         let errors = response.getError();
+                        title = $A.get("$Label.c.KC_Error");
                         if (errors && Array.isArray(errors) && errors.length > 0) {
-                            component.set('v.toasterType', 'error');
-                            component.set('v.toasterTitle', 'Error');
-                            component.set('v.toasterMessage', errors[0].message);
+                            message = errors[0].message;
+                            component.find("toastCmp").toast(title, "error", message);
+
                         }
                     } else {
-                        component.set('v.toasterType', 'info');
-                        component.set('v.toasterTitle', state);
-                        component.set('v.toasterMessage', response.getReturnValue());
+
+                        message = $A.get("$Label.c.KC_UnknownError");
+                        component.find("toastCmp").toast(title, "error", message);
                     }
                 });
                 $A.enqueueAction(setElementAction);
             } else if (state === 'ERROR') {
                 let errors = response.getError();
+                title = $A.get("$Label.c.KC_Error");
                 if (errors && Array.isArray(errors) && errors.length > 0) {
-                    component.set('v.toasterType', 'error');
-                    component.set('v.toasterTitle', 'Error');
-                    component.set('v.toasterMessage', errors[0].message);
+                    message = errors[0].message;
+                    component.find("toastCmp").toast(title, "error", message);
                 }
             } else {
-                component.set('v.toasterType', 'info');
-                component.set('v.toasterTitle', state);
-                component.set('v.toasterMessage', response.getReturnValue());
+
+                message = $A.get("$Label.c.KC_UnknownError");
+                component.find("toastCmp").toast(title, "error", message);
             }
         });
         $A.enqueueAction(action);
@@ -70,31 +71,47 @@
                         addItemEvent.fire();
                     } else if (state === 'ERROR') {
                         let errors = response.getError();
+                        title = $A.get("$Label.c.KC_Error");
                         if (errors && Array.isArray(errors) && errors.length > 0) {
-                            component.set('v.toasterType', 'error');
-                            component.set('v.toasterTitle', 'Error');
-                            component.set('v.toasterMessage', errors[0].message);
+                            message = errors[0].message;
+                            component.find("toastCmp").toast(title, "error", message);
                         }
                     } else {
-                        component.set('v.toasterType', 'info');
-                        component.set('v.toasterTitle', state);
-                        component.set('v.toasterMessage', response.getReturnValue());
+
+                        message = $A.get("$Label.c.KC_UnknownError");
+                        component.find("toastCmp").toast(title, "error", message);
                     }
                 });
                 $A.enqueueAction(setElementAction);
             } else if (state === 'ERROR') {
                 let errors = response.getError();
                 if (errors && Array.isArray(errors) && errors.length > 0) {
-                    component.set('v.toasterType', 'error');
-                    component.set('v.toasterTitle', 'Error');
-                    component.set('v.toasterMessage', errors[0].message);
+                    message = errors[0].message;
+                    component.find("toastCmp").toast(title, "error", message);
                 }
             } else {
-                component.set('v.toasterType', 'info');
-                component.set('v.toasterTitle', state);
-                component.set('v.toasterMessage', response.getReturnValue());
+                message = $A.get("$Label.c.KC_UnknownError");
+                component.find("toastCmp").toast(title, "error", message);
             }
         });
         $A.enqueueAction(action);
-    }
+    },
+
+   getOldPrice : function (component, item, callback) {
+               let action = component.get("c.getNormalPrice");
+               let name = component.get("v.record.Product2.Id");
+                console.log(component.get("v.record.Product2.Id"));
+               action.setParams({query:name});
+               action.setCallback(this, function (response) {
+                   let state = response.getState();
+                   if (state === 'SUCCESS'){
+
+                       component.set("v.oldPrice",response.getReturnValue());
+                       console.log(component.get("v.oldPrice"));
+
+                   }
+               });
+               $A.enqueueAction(action);
+           },
+
 });

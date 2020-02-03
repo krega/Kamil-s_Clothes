@@ -1,0 +1,17 @@
+.THIS {
+    padding: 30px;
+}
+
+.THIS h2{
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.THIS img{
+    margin: 20px;
+}
+
+.THIS .chosenPhoto{
+    border: solid 3px blue;
+}

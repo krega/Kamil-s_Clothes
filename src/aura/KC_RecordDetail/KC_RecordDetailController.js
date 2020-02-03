@@ -1,7 +1,8 @@
 ({
    doInit : function (component,event,helper) {
-            helper.prepareProductView(component);
+            helper.getView(component);
            helper.getPrices(component);
+           helper.getOldPrice(component);
 
   },
     selectPhoto: function(component, event, helper){
@@ -10,5 +11,8 @@
    addToCart : function (component,event,helper) {
         helper.addNewItemToCard(component);
    },
+     addToFavorites: function(component, event, helper){
+           helper.favorites(component);
+       },
 
 });

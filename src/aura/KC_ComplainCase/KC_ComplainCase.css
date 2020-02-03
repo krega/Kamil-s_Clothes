@@ -7,6 +7,6 @@
 .THIS textarea{
     height: 120px;
 }
-.THIS .slds-card__header slds-grid{
+.THIS .slds-media__body slds-truncate{
 top:3322px;
 }

@@ -1,0 +1,249 @@
+<aura:component description="KC_DiscountManager" implements="flexipage:availableForAllPageTypes" access="global"
+                controller="KC_DiscountManagerController">
+    <aura:attribute type="Object[]" name="discounts"/>
+    <aura:attribute type="String" name="discountsId"/>
+    <aura:attribute type="Object[]" name="products"/>
+    <aura:attribute type="Object[]" name="discountsWithProducts"/>
+    <aura:attribute type="Object" name="selectedDiscount"/>
+    <aura:attribute type="Object[]" name="selectedProductIds"/>
+    <aura:attribute type="Object[]" name="searchProducts"/>
+    <aura:attribute type="String" name="filterFamily"/>
+    <aura:attribute type="String" name="filterName"/>
+    <aura:attribute type="String" name="filterProducer"/>
+    <aura:attribute type="String" name="discountName"/>
+    <aura:attribute type="String" name="discountType" default="Percent"/>
+    <aura:attribute type="Decimal" name="discountValue"/>
+    <aura:attribute type="Decimal" name="specificDiscountValue"/>
+    <aura:attribute type="String" name="discountStartdate"/>
+    <aura:attribute type="String" name="discountEnddate"/>
+    <aura:attribute type="Object[]" name="selectedProducts"/>
+    <aura:attribute type="Boolean" name="showModal" default="false"/>
+    <aura:attribute type="Integer" name="discountPercentValue"/>
+    <aura:attribute type="Boolean" name="showDiscountType" default="true"/>
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <div class="slds-grid">
+        <lightning:card title="{!$Label.c.KC_SearchResults}"
+                        class="slds-p-around--small slds-col slds-m-right--small slds-size_8-of-11">
+            <aura:set attribute="actions">
+                <lightning:button label="New discount" onclick="{!c.showModal}"/>
+            </aura:set>
+            <table class="slds-table slds-table--bordered">
+                <thead>
+                <tr>
+                    <th scope="col"><span class="slds-truncate">{!$Label.c.KC_ItemName}</span></th>
+                    <th scope="col"><span class="slds-truncate">{!$Label.c.KC_Active}</span></th>
+                    <th scope="col"><span class="slds-truncate">{!$Label.c.KC_TypeOfDiscount}</span></th>
+                    <th scope="col"><span class="slds-truncate">{!$Label.c.KC_ValueOfDiscount}</span></th>
+                    <th scope="col"><span class="slds-truncate">{!$Label.c.KC_StartDiscount}</span></th>
+                    <th scope="col"><span class="slds-truncate">{!$Label.c.KC_EndofDiscount}</span></th>
+                    <th scope="col"><span class="slds-truncate">{!$Label.c.KC_Action}</span></th>
+                </tr>
+                </thead>
+                <tbody>
+                <aura:iteration items="{!v.discounts}" var="discount" indexVar="index">
+                    <tr onclick="{!c.showDetails}" data-record="{!index}">
+                        <td>{!discount.Name}</td>
+                        <td>{!discount.IsActive}</td>
+                        <td>{!discount.DiscountType__c}</td>
+                        <td>{!discount.DiscountValue__c}</td>
+                        <td>{!discount.BeginDate__c}</td>
+                        <td>{!discount.EndDate__c}</td>
+                        <td>
+                            <lightning:button iconName="utility:delete" onclick="{!c.deleteDiscount}"
+                                              value="{!discount.Id}"/>
+                            <lightning:button iconName="utility:edit" onclick="{!c.updateDiscount}"
+                                              value="{!discount.Id}"/>
+                        </td>
+                    </tr>
+                </aura:iteration>
+
+                </tbody>
+            </table>
+        </lightning:card>
+        <aura:if isTrue="{!not(empty(v.selectedDiscount))}">
+            <lightning:card class="slds-size_5-of-12 slds-p-around--small removeTabMargin slds-col"
+                            title="{!v.selectedDiscount.pricebook.Name}">
+                <table class="slds-table slds-table--bordered">
+                    <thead>
+                    <tr>
+                        <th scope="col"><span class="slds-truncate">{!$Label.c.KC_ItemName}</span></th>
+                        <th scope="col"><span class="slds-truncate">{!$Label.c.KC_ItemFamily}</span></th>
+                        <th scope="col"><span class="slds-truncate">{!$Label.c.KC_BasicPrice}</span></th>
+                        <th scope="col"><span class="slds-truncate">{!$Label.c.KC_NewPrice}</span></th>
+
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <aura:iteration items="{!v.selectedDiscount.priceEntries}" var="discountedProduct">
+                        <tr>
+                            <td>{!discountedProduct.Name}</td>
+                            <td>{!discountedProduct.Product2.Family}</td>
+                            <td>
+                                <lightning:formattedNumber value="{!discountedProduct.basicValue}" style="currency"/>
+                            </td>
+                            <td>
+                                <lightning:formattedNumber value="{!discountedProduct.UnitPrice}" style="currency"/>
+                            </td>
+                        </tr>
+                    </aura:iteration>
+
+                    </tbody>
+                </table>
+            </lightning:card>
+        </aura:if>
+    </div>
+    <aura:if isTrue="{!v.showModal}">
+        <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true"
+                 aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open slds-modal_medium">
+            <div class="slds-modal__container">
+                <header class="slds-modal__header">
+                    <lightning:buttonIcon iconName="utility:close" onclick="{!c.closeModal}" alternativeText="close"
+                                          variant="bare-inverse" class="slds-modal__close"/>
+
+
+                    <aura:if isTrue="{!empty(v.discountsId)}">
+                        <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">Crete new
+                            discount</h2>
+                    </aura:if>
+                    <aura:if isTrue="{!(v.discountsId) != null}">
+
+                        <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">Update discount</h2>
+                    </aura:if>
+                </header>
+                <ui:scrollerWrapper class="scrollerSize">
+                    <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+                        <lightning:input label="Discount name" placeholder="Enter discount name"
+                                         value="{!v.discountName}"/>
+                        <h1 class="slds-form-element__label slds-show">Discount type</h1>
+                        <lightning:buttonGroup>
+                            <lightning:button label="Percent" variant="brand" onclick="{!c.toogleDiscountType}"
+                                              aura:id="percent"/>
+                            <lightning:button label="Amount" variant="neutral" onclick="{!c.toogleDiscountType}"
+                                              aura:id="amount"/>
+                        </lightning:buttonGroup>
+                        <aura:if isTrue="{!v.showDiscountType}">
+                            <lightning:input type="number" label="Discount value [%]" value="{!v.discountValue}"
+                                             formatter="percent"
+                                             step="0.01"/>
+                        </aura:if>
+                        <aura:if isTrue="{!!v.showDiscountType}">
+                            <lightning:input type="number" label="Discount value [€]" value="{!v.discountValue}"
+                                             formatter="currency" step="0.01"/>
+                        </aura:if>
+                        <lightning:input type="date" label="Discount start date" value="{!v.discountStartdate}"
+                                         required="true"/>
+                        <lightning:input type="date" label="Discount end date" value="{!v.discountEnddate}"
+                                         required="true"/>
+                        <div class="slds-grid slds-gutters slds-m-vertical--medium">
+                            <div class="slds-col">
+                                <lightning:input label="Product name" placeholder="Enter product name"
+                                                 value="{!v.filterName}"/>
+                            </div>
+                            <div class="slds-col">
+                                <lightning:input label="Product family" placeholder="Enter product family"
+                                                 value="{!v.filterFamily}"/>
+
+                            </div>
+                            <div class="slds-col">
+                                <lightning:input label="Product producer" placeholder="Enter product producer"
+                                                 value="{!v.filterProducer}"/>
+                            </div>
+
+                        </div>
+                        <div class="slds-grid slds-gutters slds-p-bottom--small">
+                            <div class="slds-col">
+                                <lightning:button label="Search Products" onclick="{!c.filterProducts}"/>
+                            </div>
+                        </div>
+                        <table class="slds-table slds-table--bordered">
+                            <thead>
+                            <tr>
+                                <th scope="col"><span class="slds-truncate">{!$Label.c.KC_SelectItem}</span></th>
+                                <th scope="col"><span class="slds-truncate">{!$Label.c.KC_ItemName}</span></th>
+                                <th scope="col"><span class="slds-truncate">{!$Label.c.KC_ItemFamily}</span></th>
+                                <th scope="col"><span class="slds-truncate">Producer</span></th>
+                                <th scope="col"><span class="slds-truncate">{!$Label.c.KC_BasicPrice}</span></th>
+
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <aura:iteration items="{!v.searchProducts}" var="product">
+                                <tr>
+                                    <td>
+                                        <lightning:input type="checkbox-button" label="Input One"
+                                                         onchange="{!c.addItemToDiscount}" value="{!product.Id}"
+                                                         checked="{!product.inputChecked}"/>
+                                    </td>
+                                    <td>{!product.Name}</td>
+                                    <td>{!product.Family}</td>
+                                    <td>{!product.Producent__c}</td>
+                                    <td>{!product.basicValue}</td>
+                                    <td>{!product.DiscountPrice}</td>
+                                </tr>
+                            </aura:iteration>
+                            </tbody>
+                        </table>
+                        <table class="slds-table slds-table--bordered">
+                            <thead>
+                            <tr>
+                                <th scope="col"><span class="slds-truncate">{!$Label.c.KC_ItemName}</span></th>
+                                <th scope="col"><span class="slds-truncate">{!$Label.c.KC_ItemFamily}</span></th>
+                                <th scope="col"><span class="slds-truncate">{!$Label.c.KC_Producer}</span></th>
+                                <th scope="col"><span class="slds-truncate">{!$Label.c.KC_BasicPrice}</span></th>
+                                <th scope="col"><span class="slds-truncate">{!$Label.c.KC_NewPrice}</span></th>
+                                <th scope="col"><span class="slds-truncate">{!$Label.c.KC_AddSpecialDiscont}</span></th>
+
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <aura:iteration items="{!v.selectedProducts}" var="selectedProduct" indexVar="index">
+                                <tr>
+                                    <td>{!selectedProduct.Name}</td>
+                                    <td>{!selectedProduct.Family}</td>
+                                    <td>{!selectedProduct.Producent__c}</td>
+                                    <td>{!selectedProduct.basicValue}</td>
+                                    <td>{!selectedProduct.DiscountPrice}</td>
+
+                                    <td>
+                                        <aura:if isTrue="{!!v.showDiscountType}">
+                                            <lightning:input type="number" label="Discount value [€]"
+                                                             value="{!selectedProduct.specialDiscount}"
+                                                             formatter="currency" step="0.01"/>
+                                        </aura:if>
+
+                                        <aura:if isTrue="{!v.showDiscountType}">
+                                            <lightning:input type="number" label="Discount value [%]"
+                                                             value="{!selectedProduct.specialDiscount}"
+                                                             formatter="percent"
+                                                             step="0.01"/>
+                                        </aura:if>
+                                        <div data-index="{!index}" onclick="{!c.specialDiscount}">
+                                            <lightning:button onclick="{!c.specialDiscount}">Add Special Discount
+                                            </lightning:button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </aura:iteration>
+                            </tbody>
+                        </table>
+
+                    </div>
+                </ui:scrollerWrapper>
+                <footer class="slds-modal__footer">
+                    <lightning:button variant="neutral" label="Cancel" title="Cancel" onclick="{!c.closeModal}"/>
+                    <aura:if isTrue="{!empty(v.discountsId)}">
+
+                        <lightning:button variant="brand" label="Add new discount" title="Add new discount"
+                                          onclick="{!c.addNewDiscount}"/>
+                    </aura:if>
+                    <aura:if isTrue="{!(v.discountsId) != null}">
+
+                        <lightning:button variant="brand" label="Update discount" title="Update discount"
+                                          onclick="{!c.updateSelectedDiscount}"/>
+                    </aura:if>
+                </footer>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </aura:if>
+</aura:component>

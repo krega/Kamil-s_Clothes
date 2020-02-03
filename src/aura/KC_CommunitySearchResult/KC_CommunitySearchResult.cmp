@@ -1,24 +1,35 @@
-<aura:component description="KC_CommunitySearchResult">
+<aura:component description="KC_CommunitySearchResult" controller="KC_CommunitySearchController">
 
     <aura:attribute name="item" type="Object[]"/>
+    <aura:attribute name="oldPrice" type="Object"/>
     <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
     <div class="slds-grid slds-grid_align-center">
         <div class="slds-col">
             <h3 class="slds-text-heading_medium "></h3>
-         <div onclick="{!c.redirectToDetailPage}" data-index="{!v.item.Product2.Id}" class="product">
-                    <div class="productName">
-                            {!v.item.Product2.Family}
-                    </div>
-                    <lightning:card class="slds-size--1-of-5 slds-p-horizontal_small removeHeader">
-                        <img src="{!v.item.Product2.PhotoId__c}" alt="productphoto"/>
+            <div onclick="{!c.redirectToDetailPage}" data-index="{!v.item.Product2.Id}" class="product">
+                <div class="productName">
+                        {!v.item.Product2.Family}
+                </div>
+                <lightning:card class="slds-size--1-of-5 slds-p-horizontal_small removeHeader">
+                    <img src="{!v.item.Product2.PhotoId__c}" alt="productphoto"/>
+                    <aura:if isTrue="{!v.item.UnitPrice ==v.oldPrice[0].UnitPrice }">
                         <p class="slds-text-heading_medium ">
                             <lightning:formattedNumber value="{!v.item.UnitPrice}" style="currency"/>
                         </p>
-                        <p class="slds-text-title">
-                                {!v.item.Name}
-                        </p>
-                    </lightning:card>
-             </div>
+                        <aura:set attribute="else">
+                            <p class="slds-text-heading_medium "> <span class="strikethrough">Old
+                                <lightning:formattedNumber value="{!v.oldPrice[0].UnitPrice}" style="currency"/></span>
+                            </p>
+                            <p class="slds-text-heading_medium ">New Price
+                                <lightning:formattedNumber value="{!v.item.UnitPrice}" style="currency"/>
+                            </p>
+                        </aura:set>
+                    </aura:if>
+                    <p class="slds-text-title">
+                            {!v.item.Name}
+                    </p>
+                </lightning:card>
+            </div>
         </div>
     </div>
 </aura:component>

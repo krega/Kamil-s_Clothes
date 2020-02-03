@@ -23,12 +23,12 @@ public with sharing class KC_OrdersController {
     }
     public class OrderWrapper {
         @AuraEnabled
-        public Order order;
+        public Order orderedUnit;
         @AuraEnabled
         public List<OrderItem> orderItems;
 
         public OrderWrapper(Order order, List<OrderItem> orderItems) {
-            this.order = order;
+            this.orderedUnit = order;
             this.orderItems = orderItems;
         }
     }

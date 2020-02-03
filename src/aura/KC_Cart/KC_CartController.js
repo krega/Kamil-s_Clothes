@@ -4,7 +4,7 @@
         helper.getProductsFromCart(component);
     },
 
-    redirectToCartPage: function(component, event, helper) {
+    redirectToCartPage: function() {
         let urlEvent = $A.get("e.force:navigateToURL");
         urlEvent.setParams({
             "url": '/s/cart',
@@ -21,7 +21,7 @@
         helper.getProductsFromCart(component);
     },
 
-    closePop: function(component, event, helper) {
+    closePop: function(component) {
         var cmpTarget = component.find('pop');
         $A.util.addClass(cmpTarget, 'slds-hide');
         $A.util.removeClass(cmpTarget, 'slds-show');

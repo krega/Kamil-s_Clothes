@@ -1,5 +1,5 @@
 ({
-    getProductsFromCart: function(component, item, callback) {
+    getProductsFromCart: function(component) {
         let productsIds = [];
         let productAction = component.get("c.getCartElements");
         productAction.setCallback(this, function(response) {
@@ -33,34 +33,35 @@
                         component.set("v.records", results);
                     } else if (state === 'ERROR') {
                         let errors = response.getError();
+                        title = $A.get("$Label.c.KC_Error");
                         if (errors && Array.isArray(errors) && errors.length > 0) {
-                            component.set('v.toasterType', 'error');
-                            component.set('v.toasterTitle', 'Error');
-                            component.set('v.toasterMessage', errors[0].message);
+                            message = errors[0].message;
+                            component.find("toastCmp").toast(title, "error", message);
+
                         }
                     } else {
-                        component.set('v.toasterType', 'info');
-                        component.set('v.toasterTitle', state);
-                        component.set('v.toasterMessage', response.getReturnValue());
+
+                        message = $A.get("$Label.c.KC_UnknownError");
+                        component.find("toastCmp").toast(title, "error", message);
                     }
                 });
                 $A.enqueueAction(action);
             } else if (state === 'ERROR') {
                 let errors = response.getError();
+                title = $A.get("$Label.c.KC_Error");
                 if (errors && Array.isArray(errors) && errors.length > 0) {
-                    component.set('v.toasterType', 'error');
-                    component.set('v.toasterTitle', 'Error');
-                    component.set('v.toasterMessage', errors[0].message);
+                    message = errors[0].message;
+                    component.find("toastCmp").toast(title, "error", message);
+
                 }
             } else {
-                component.set('v.toasterType', 'info');
-                component.set('v.toasterTitle', state);
-                component.set('v.toasterMessage', response.getReturnValue());
+                message = $A.get("$Label.c.KC_UnknownError");
+                component.find("toastCmp").toast(title, "error", message);
             }
         });
         $A.enqueueAction(productAction);
     },
-    postAnOrder: function(component, item, callback) {
+    postAnOrder: function(component) {
         let order = {
             Items: component.get("v.records"),
             BillingStreet: component.get("v.billingStreet"),
@@ -76,23 +77,10 @@
         });
         action.setCallback(this, function(response) {
             let status = response.getState();
-            if (status === 'SUCCESS') {
-                component.set("v.orderModal", false);
-                component.set('v.toasterType', 'info');
-                component.set('v.toasterTitle', 'Item was ordered');
-                component.set('v.toasterMessage', 'You can check status of your oder in Order tab');
-                let urlEvent = $A.get("e.force:navigateToURL");
-                urlEvent.setParams({
-                    "url": '/s/',
-                    "isredirect": false
-                });
-                urlEvent.fire();
-            }
         });
         $A.enqueueAction(action);
     },
-
-    fillOrderModal: function(component, item, callback) {
+    fillOrderModal: function(component) {
         console.log('fillOrderModal');
         let action = component.get("c.getBillingInfo");
         console.log('fillOrderModal');
@@ -106,14 +94,19 @@
                 component.set("v.billingCountry", products.Address.country);
                 component.set("v.billingCity", products.Address.city);
                 component.set("v.billingPostalCode", products.Address.postalCode);
+            } else if (state === 'ERROR') {
+                let errors = response.getError();
+                title = $A.get("$Label.c.KC_Error");
+                if (errors && Array.isArray(errors) && errors.length > 0) {
+                    message = errors[0].message;
+                    component.find("toastCmp").toast(title, "error", message);
+
+                }
             } else {
-                component.set('v.toasterType', 'info');
-                component.set('v.toasterTitle', state);
-                component.set('v.toasterMessage', response.getReturnValue());
+                message = $A.get("$Label.c.KC_UnknownError");
+                component.find("toastCmp").toast(title, "error", message);
             }
         });
         $A.enqueueAction(action);
     },
-
-
 });
